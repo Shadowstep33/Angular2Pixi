@@ -6,6 +6,13 @@ Create PIXI scenes in Angular 2 with markup!
 
 ```npm install angular2pixi```
 
+# Dependencies
+
+A2P has two main dependencies that should automatically be installed
+
+- GSAP
+- PIXI.js
+
 # Getting Started
 
 Include the module in your app
@@ -39,6 +46,37 @@ and a few services
 - scene: utilitarian service for managing scenes
 - asset: load up assets and do stuff when they're ready
 
+# Simple Example
 
+```
+	<renderer #renderer [width]="w" [height]="h">
+		<home-scene
+		[renderer]="renderer"
+		(stageUpdated)="homeSceneReady($event)">
+			
+			<sprite
+				[x]="w * 0.5"
+				[y]="h * 0.6"
+				imgUrl="./assets/demo/person.png"
+				*ngIf="homeScene"
+				scale="1"
+				[container]="homeScene.layers.hud"
+			></sprite>
+			
+		</home-scene>
+	</renderer>
+```
+The above example is the core methodology to follow. Essentially, it:
 
+- creates the pixi renderer
+- creates a scene on that renderer (from a custom defined component called home-scene)
+- adds a sprite to that scene
 
+Now, there is something subtle but very important happening. stageUpdated accepts a function and passes it access to the scene object that gets created. 
+
+```	homeSceneReady(scene){
+		console.log(scene);
+		this.homeScene = scene;
+	}```
+	
+This allows you to modify the scene from the parent component. 
