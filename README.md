@@ -74,9 +74,11 @@ The above example is the core methodology to follow. Essentially, it:
 
 Now, there is something subtle but very important happening. stageUpdated accepts a function and passes it access to the scene object that gets created. 
 
-```	homeSceneReady(scene){
-		console.log(scene);
-		this.homeScene = scene;
-	}```
+```	
+homeSceneReady(scene){
+	console.log(scene);
+	this.homeScene = scene;
+}
+```
 	
 This allows you to modify the scene from the parent component. 
