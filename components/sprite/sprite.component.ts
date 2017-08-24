@@ -1,5 +1,7 @@
 import { Component, ElementRef, Input } from '@angular/core';
-
+import { Platform } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import * as PIXI from 'pixi.js';
 import { 
 	TweenLite, 
@@ -27,6 +29,7 @@ export class SpriteComponent {
   @Input() anim: string = '';
   
   spriteStage: PIXI.Container;
+  textSpr: PIXI.Text;
   
   spriteObject: PIXI.Sprite = null;
 
@@ -43,7 +46,6 @@ export class SpriteComponent {
 	if(this.container)
 		this.container.addChild(this.spriteStage); 
 		
-	console.log("Anim ",this.anim)
 	if(this.anim == 'hover')
 		this.slowHover();
 	
@@ -86,7 +88,7 @@ export class SpriteComponent {
 		t.position.y = this.y;
 		t.anchor.y = 0.5;
 		
-		console.log(t);
+		this.textSpr = t;
 	}
   }
   

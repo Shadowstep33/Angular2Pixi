@@ -9,7 +9,7 @@ import {
   EventEmitter
 } from '@angular/core';
 
-import { PixiService } from '../../providers/pixi.service';
+import { PixiService } from '../../pixi.service';
 
 @Component({
   selector: 'renderer',

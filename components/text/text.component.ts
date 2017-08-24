@@ -1,5 +1,7 @@
 import { Component, ElementRef, Input } from '@angular/core';
-
+import { Platform } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import * as PIXI from 'pixi.js';
 import { 
 	TweenLite, 
@@ -25,8 +27,6 @@ export class TextComponent extends SpriteComponent {
 
   ngOnInit(){
 	super.ngOnInit.bind(this)();
-	
-	this.spriteStage = new PIXI.Container();
 	
 	this.addText(this.text);
 	
