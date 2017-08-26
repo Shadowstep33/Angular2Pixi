@@ -1,8 +1,6 @@
-/// <reference types="pixi.js" />
 import 'rxjs/add/operator/map';
-import * as PIXI from 'pixi.js';
 export declare class AssetService {
-    loader: PIXI.loaders.Loader;
+    loader: any;
     loading: boolean;
     assets_loaded: boolean;
     callbacks: {};

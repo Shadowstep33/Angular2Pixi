@@ -1,9 +1,7 @@
-/// <reference types="pixi.js" />
 import 'rxjs/add/operator/map';
-import * as PIXI from 'pixi.js';
 export declare class PixiService {
-    loader: PIXI.loaders.Loader;
-    app: PIXI.Application;
+    loader: any;
+    app: any;
     ratio: number;
     starting_width: number;
     starting_width_of_window: number;
