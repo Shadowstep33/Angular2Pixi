@@ -32,10 +32,7 @@ PixiModule = __decorate([
             renderer_component_1.RendererComponent,
             sprite_component_1.SpriteComponent,
             text_component_1.TextComponent,
-            filters_component_1.FilterComponent,
-            asset_service_1.AssetService,
-            pixi_service_1.PixiService,
-            scene_service_1.SceneService
+            filters_component_1.FilterComponent
         ],
         providers: [
             asset_service_1.AssetService,
