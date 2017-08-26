@@ -99,3 +99,4 @@ PixiService = __decorate([
     core_1.Injectable()
 ], PixiService);
 exports.PixiService = PixiService;
+//# sourceMappingURL=pixi.service.js.map

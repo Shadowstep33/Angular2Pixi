@@ -45,3 +45,4 @@ PixiModule = __decorate([
     })
 ], PixiModule);
 exports.PixiModule = PixiModule;
+//# sourceMappingURL=pixi.module.js.map

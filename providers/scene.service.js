@@ -112,3 +112,4 @@ SceneService = __decorate([
     core_1.Injectable()
 ], SceneService);
 exports.SceneService = SceneService;
+//# sourceMappingURL=scene.service.js.map

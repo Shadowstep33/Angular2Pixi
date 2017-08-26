@@ -153,3 +153,4 @@ SpriteComponent = __decorate([
     })
 ], SpriteComponent);
 exports.SpriteComponent = SpriteComponent;
+//# sourceMappingURL=sprite.component.js.map

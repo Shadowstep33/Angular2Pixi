@@ -71,3 +71,4 @@ AssetService = __decorate([
     core_1.Injectable()
 ], AssetService);
 exports.AssetService = AssetService;
+//# sourceMappingURL=asset.service.js.map

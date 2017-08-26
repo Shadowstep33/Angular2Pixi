@@ -107,3 +107,4 @@ TextComponent = __decorate([
     })
 ], TextComponent);
 exports.TextComponent = TextComponent;
+//# sourceMappingURL=text.component.js.map

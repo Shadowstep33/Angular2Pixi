@@ -6,3 +6,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./asset.service"));
 __export(require("./scene.service"));
 __export(require("./pixi.service"));
+//# sourceMappingURL=index.js.map

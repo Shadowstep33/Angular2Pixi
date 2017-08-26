@@ -52,3 +52,4 @@ RendererComponent = __decorate([
     })
 ], RendererComponent);
 exports.RendererComponent = RendererComponent;
+//# sourceMappingURL=renderer.component.js.map
