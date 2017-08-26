@@ -24,7 +24,10 @@ import { FilterComponent } from './components/filters/filters.component';
 	RendererComponent,
 	SpriteComponent,
     TextComponent,
-	FilterComponent
+	FilterComponent,
+	AssetService,
+	PixiService,
+	SceneService
   ],
   providers: [
 	AssetService,
