@@ -29,7 +29,6 @@ let SpriteComponent = class SpriteComponent {
         this.addText(this.text);
         if (this.container)
             this.container.addChild(this.spriteStage);
-        console.log("Anim ", this.anim);
         if (this.anim == 'hover')
             this.slowHover();
         if (this.handleClick && this.interactive)
@@ -64,7 +63,7 @@ let SpriteComponent = class SpriteComponent {
             t.position.x = this.x - 30;
             t.position.y = this.y;
             t.anchor.y = 0.5;
-            console.log(t);
+            this.textSpr = t;
         }
     }
     addInteraction(cb) {

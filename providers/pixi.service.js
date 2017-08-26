@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
+require("rxjs/add/operator/map");
 const PIXI = require("pixi.js");
 /*
   Generated class for the Pixi provider.

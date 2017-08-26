@@ -14,6 +14,7 @@ const scene_service_1 = require("./providers/scene.service");
 const renderer_component_1 = require("./components/renderer/renderer.component");
 const sprite_component_1 = require("./components/sprite/sprite.component");
 const text_component_1 = require("./components/text/text.component");
+const filters_component_1 = require("./components/filters/filters.component");
 let PixiModule = class PixiModule {
 };
 PixiModule = __decorate([
@@ -21,7 +22,8 @@ PixiModule = __decorate([
         declarations: [
             renderer_component_1.RendererComponent,
             sprite_component_1.SpriteComponent,
-            text_component_1.TextComponent
+            text_component_1.TextComponent,
+            filters_component_1.FilterComponent
         ],
         imports: [
             platform_browser_1.BrowserModule
@@ -29,7 +31,11 @@ PixiModule = __decorate([
         exports: [
             renderer_component_1.RendererComponent,
             sprite_component_1.SpriteComponent,
-            text_component_1.TextComponent
+            text_component_1.TextComponent,
+            filters_component_1.FilterComponent,
+            asset_service_1.AssetService,
+            pixi_service_1.PixiService,
+            scene_service_1.SceneService
         ],
         providers: [
             asset_service_1.AssetService,

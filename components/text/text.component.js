@@ -15,9 +15,11 @@ let TextComponent = class TextComponent extends sprite_component_1.SpriteCompone
         super();
         this.fontSize = "48px";
     }
+    set valueToShow(val) {
+        this.text = (val) || '';
+    }
     ngOnInit() {
         super.ngOnInit.bind(this)();
-        this.spriteStage = new PIXI.Container();
         this.addText(this.text);
         console.log("Anim ", this.anim);
         if (this.anim == 'hover')
@@ -95,6 +97,9 @@ let TextComponent = class TextComponent extends sprite_component_1.SpriteCompone
 __decorate([
     core_1.Input()
 ], TextComponent.prototype, "fontSize", void 0);
+__decorate([
+    core_1.Input()
+], TextComponent.prototype, "valueToShow", null);
 TextComponent = __decorate([
     core_1.Component({
         selector: 'text-sprite',
