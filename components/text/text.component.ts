@@ -20,6 +20,10 @@ import { SpriteComponent } from '../sprite/sprite.component';
 export class TextComponent extends SpriteComponent {
 
   @Input() fontSize: string = "48px";
+	@Input()
+	set valueToShow(val: string) {
+		this.text = (val) || '';	
+	}
 
   constructor() {
 	super();

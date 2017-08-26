@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Component } from '@angular/core';
+import { Platform } from 'ionic-angular';
 import * as PIXI from 'pixi.js';
 
 /**

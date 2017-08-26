@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import 'rxjs/add/operator/map';
 import * as PIXI from 'pixi.js';
 
 /*

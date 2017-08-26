@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { PixiService } from './providers/pixi.service';
-import { AssetService } from './providers/asset.service';
-import { SceneService } from './providers/scene.service';
+import { PixiService } from './pixi.service';
+import { AssetService } from './asset.service';
+import { SceneService } from './scene.service';
 
 import { RendererComponent } from './components/renderer/renderer.component';
 import { SpriteComponent } from './components/sprite/sprite.component';
 import { TextComponent } from './components/text/text.component';
-
+import { FilterComponent } from './components/filters/filters.component';
 
 @NgModule({
   declarations: [
     RendererComponent,
     SpriteComponent,
-    TextComponent
+    TextComponent,
+	FilterComponent
   ],
   imports: [
 	BrowserModule
@@ -22,7 +23,8 @@ import { TextComponent } from './components/text/text.component';
   exports: [
 	RendererComponent,
 	SpriteComponent,
-    TextComponent
+    TextComponent,
+	FilterComponent
   ],
   providers: [
 	AssetService,
