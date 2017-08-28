@@ -20,6 +20,8 @@ let TextComponent = class TextComponent extends sprite_component_1.SpriteCompone
     }
     set valueToShow(val) {
         this.text = (val) || '';
+        if (this.textSpr)
+            this.textSpr.text = this.text;
     }
     ngOnInit() {
         super.ngOnInit.bind(this)();
@@ -44,6 +46,7 @@ let TextComponent = class TextComponent extends sprite_component_1.SpriteCompone
             t.position.x = this.x - 30;
             t.position.y = this.y;
             t.anchor.y = 0.5;
+            this.textSpr = t;
             console.log(t);
         }
     }

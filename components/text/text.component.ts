@@ -20,6 +20,9 @@ export class TextComponent extends SpriteComponent {
 	@Input()
 	set valueToShow(val: string) {
 		this.text = (val) || '';	
+		
+		if(this.textSpr)
+			this.textSpr.text = this.text;
 	}
 
   constructor() {
@@ -55,6 +58,7 @@ export class TextComponent extends SpriteComponent {
 		t.position.y = this.y;
 		t.anchor.y = 0.5;
 		
+		this.textSpr = t;
 		console.log(t);
 	}
   }
