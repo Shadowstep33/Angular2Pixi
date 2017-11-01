@@ -39,6 +39,7 @@ A2P contains a few basic components:
 - renderer: used to create the canvas
 - sprites: extendable component used to create PIXI.Sprites and support animations and interactions
 - text: similar to the sprite component, but uses PIXI.Text instead
+- filters: allows you to add effects to Containers
 
 and a few services
 
