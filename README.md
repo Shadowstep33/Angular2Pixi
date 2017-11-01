@@ -82,3 +82,32 @@ homeSceneReady(scene){
 ```
 	
 This allows you to modify the scene from the parent component. 
+
+# Sprite Example
+
+```
+	<sprite
+		[x]="0"
+		[y]="0"
+		scale="1"
+		imgUrl="./assets/image.png"
+		[container]="yourContainer"
+		anim="hover"
+	></sprite>
+```
+
+Params:
+```
+x: int = x position of sprite
+y: int = y position of sprite
+scale: int = x and y scale of sprite
+imgUrl: string = url for baseTexture of sprite
+text: string = text to place on top of sprite
+container: Pixi.Container = container to be parent for sprite
+anim: string = animation to play on key events; hover | explode 
+	- hover will hover up and down slowly on loop
+	- explode will scale up and disappear on click
+handleClick: function = used for interation callback
+font: string = name of font family
+interactive: boolean = whether sprite is clickable
+```
