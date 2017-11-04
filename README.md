@@ -40,11 +40,11 @@ A2P contains a few basic components:
 - sprites: extendable component used to create PIXI.Sprites and support animations and interactions
 - text: similar to the sprite component, but uses PIXI.Text instead
 - filters: allows you to add effects to Containers
+- scene: some basic container set up for quicker scene creation
 
 and a few services
 
 - pixi: gives access to pixi itself and initializes your Pixi workspace
-- scene: utilitarian service for managing scenes
 - asset: load up assets and do stuff when they're ready
 
 # Simple Example
