@@ -31,11 +31,12 @@ let SceneComponent = class SceneComponent {
     }
     init(layers) {
         console.log(PIXI);
-        //Add layers to homescene stage
-        for (var l in layers)
-            this.mainStage.addChild(layers[l]);
         if (layers)
             this.layers = layers;
+        //Add layers to homescene stage
+        for (var l in this.layers)
+            this.mainStage.addChild(this.layers[l]);
+        this.renderer.pixi.worldStage.addChild(this.mainStage);
     }
     fadeInScene() {
         var self = this;

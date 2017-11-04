@@ -16,7 +16,7 @@ export declare class SceneComponent {
     moveHandlers: {};
     clickHandlers: {};
     constructor();
-    init(layers: any): void;
+    init(layers?: any): void;
     fadeInScene(): Promise<{}>;
     fadeOutScene(): Promise<{}>;
     blurScene(scene: any): void;
