@@ -1,20 +1,24 @@
+import { EventEmitter } from '@angular/core';
 import * as PIXI from 'pixi.js';
+import { RendererComponent } from '../renderer/renderer.component';
 /**
 *
 *	Organization for a Scene (collection of layers and sprites)
 *
 **/
-export declare class SceneService {
+export declare class SceneComponent {
     scale: number;
     scaleFactor: number;
     layers: {};
     mainStage: PIXI.Container;
+    renderer: RendererComponent;
+    stageUpdated: EventEmitter<{}>;
     moveHandlers: {};
     clickHandlers: {};
     constructor();
     init(layers: any): void;
-    fadeInScene(scene: any): Promise<{}>;
-    fadeOutScene(scene: any): Promise<{}>;
+    fadeInScene(): Promise<{}>;
+    fadeOutScene(): Promise<{}>;
     blurScene(scene: any): void;
     registerHandler(eventStr: any, id: any, fn: any): void;
     deregisterCallback(eventStr: any, id: any): void;
@@ -25,4 +29,5 @@ export declare class SceneService {
     **/
     wipe(): void;
     unload(): void;
+    resizeStage(): void;
 }

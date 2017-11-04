@@ -5,7 +5,9 @@ export declare class SpriteComponent {
     scale: number;
     font: string;
     interactive: boolean;
+    _x: number;
     x: number;
+    _y: number;
     y: number;
     text: string;
     container: PIXI.Container;
@@ -15,7 +17,9 @@ export declare class SpriteComponent {
     spriteObject: PIXI.Sprite;
     constructor();
     ngOnInit(): void;
+    init(): void;
     addSprite(img: any): void;
+    positionSprite(): void;
     addText(text: any): void;
     addInteraction(cb: any): void;
     slowHover(): void;

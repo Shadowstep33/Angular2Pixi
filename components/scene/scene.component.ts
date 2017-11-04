@@ -1,21 +1,27 @@
-import { Injectable } from '@angular/core';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output, HostListener } from '@angular/core';
 import * as PIXI from 'pixi.js';
 
+import { RendererComponent } from '../renderer/renderer.component';
 /**
 *
 *	Organization for a Scene (collection of layers and sprites)
 *
 **/
 
-@Injectable()
-export class SceneService {
+@Component({
+  selector: 'scene',
+  template: '<span></span>'
+})
+export class SceneComponent {
 
   scale = 1;
   scaleFactor = 1.1;
   layers = {};
-  mainStage: PIXI.Container;
+  mainStage: PIXI.Container = new PIXI.Container();
 	
+  @Input() renderer: RendererComponent;
+  @Output() stageUpdated = new EventEmitter();
+  
   //Functions to execute on move
   moveHandlers = {};
 
@@ -28,36 +34,40 @@ export class SceneService {
   init(layers){
   
 	console.log(PIXI);
-	this.mainStage = new PIXI.Container();
+	//Add layers to homescene stage
+	for(var l in layers)
+		this.mainStage.addChild(layers[l]);
 	
 	if(layers)
 		this.layers = layers;
   }
 
-	fadeInScene(scene){
+	fadeInScene(){
+		var self = this;
 		return (new Promise( (resolve, reject) => {
 			let c = setInterval(()=>{
-				if(scene.layers.background.alpha >= 1){
+				if(self.mainStage.alpha >= 1){
 					clearInterval(c);
 					
 					resolve();
 				}else{
-					scene.layers.background.alpha += 0.12;
+					self.mainStage.alpha += 0.12;
 				}
 			}, 50);
 		}));
 		
 	}
 	
-	fadeOutScene(scene){
+	fadeOutScene(){
+		var self = this;
 		return (new Promise( (resolve, reject) => {
 			let c = setInterval(()=>{
-				if(scene.layers.background.alpha <= 0){
+				if(self.mainStage.alpha <= 0){
 					clearInterval(c);
 					
 					resolve();
 				}else{
-					scene.layers.background.alpha -= 0.12;
+					self.mainStage.alpha -= 0.12;
 				}
 			}, 50);
 		}));
@@ -122,5 +132,36 @@ export class SceneService {
 	if(this.mainStage)
 	if(this.mainStage.parent)
 		this.mainStage.parent.removeChild(this.mainStage);
+  }
+  
+  @HostListener('window:resize')
+  resizeStage(){
+	console.log(this);
+	let W = window.innerWidth;
+	let H = window.innerHeight;
+	
+	if(this.renderer){
+		let renderer = this.renderer.pixi.renderer;
+		let currWidth = this.mainStage.getBounds().width;
+		let currHeight = this.mainStage.getBounds().height;
+		
+		//Get current ratio of stage to renderer
+		let ratio = Math.min(W / renderer.width, H / renderer.height);
+		console.log("Ratio", ratio);
+		
+		//Resize renderer to new window
+		this.renderer.width = W;
+		this.renderer.height = H;
+		renderer.resize(W, H);
+		
+		//Move mainstage to center of screen
+		// this.mainStage.position.set(currWidth/2, currHeight/2);
+		
+		//Scale it up/down to fit the renderer and maintain ratio
+		this.mainStage.scale.set(ratio, ratio);
+
+		//Pivot so it originates from window center
+		// this.mainStage.pivot.set(W/2, H/2);
+	}
   }
 }

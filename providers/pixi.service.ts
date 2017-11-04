@@ -103,7 +103,14 @@ export class PixiService {
       h = window.innerHeight;
 
     //Initialize game container
-    this.renderer = new PIXI.WebGLRenderer(w, h, { transparent: true, autoResize: false, resolution: 1, view: el });
+    this.renderer = PIXI.autoDetectRenderer({
+		width: w,
+		height: h,
+		transparent: true, 
+		autoResize: false, 
+		resolution: 1, 
+		view: el 
+	});
     this.worldStage = new PIXI.Container();
 
     //Initialize game camera

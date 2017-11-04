@@ -3,9 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { PixiService } from './providers/pixi.service';
 import { AssetService } from './providers/asset.service';
-import { SceneService } from './providers/scene.service';
 
 import { RendererComponent } from './components/renderer/renderer.component';
+import { SceneComponent } from './components/scene/scene.component';
 import { SpriteComponent } from './components/sprite/sprite.component';
 import { TextComponent } from './components/text/text.component';
 import { FilterComponent } from './components/filters/filters.component';
@@ -13,6 +13,7 @@ import { FilterComponent } from './components/filters/filters.component';
 @NgModule({
   declarations: [
     RendererComponent,
+    SceneComponent,
     SpriteComponent,
     TextComponent,
 	FilterComponent
@@ -22,14 +23,14 @@ import { FilterComponent } from './components/filters/filters.component';
   ],
   exports: [
 	RendererComponent,
+	SceneComponent,
 	SpriteComponent,
     TextComponent,
 	FilterComponent
   ],
   providers: [
 	AssetService,
-	PixiService,
-	SceneService
+	PixiService
   ]
 })
 export class PixiModule { }

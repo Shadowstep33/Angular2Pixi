@@ -10,5 +10,4 @@ export declare class RendererComponent {
     width: number;
     constructor(pixi: PixiService);
     ngOnInit(): void;
-    resetWidthHeight(): void;
 }

@@ -10,8 +10,8 @@ const core_1 = require("@angular/core");
 const platform_browser_1 = require("@angular/platform-browser");
 const pixi_service_1 = require("./providers/pixi.service");
 const asset_service_1 = require("./providers/asset.service");
-const scene_service_1 = require("./providers/scene.service");
 const renderer_component_1 = require("./components/renderer/renderer.component");
+const scene_component_1 = require("./components/scene/scene.component");
 const sprite_component_1 = require("./components/sprite/sprite.component");
 const text_component_1 = require("./components/text/text.component");
 const filters_component_1 = require("./components/filters/filters.component");
@@ -21,6 +21,7 @@ PixiModule = __decorate([
     core_1.NgModule({
         declarations: [
             renderer_component_1.RendererComponent,
+            scene_component_1.SceneComponent,
             sprite_component_1.SpriteComponent,
             text_component_1.TextComponent,
             filters_component_1.FilterComponent
@@ -30,14 +31,14 @@ PixiModule = __decorate([
         ],
         exports: [
             renderer_component_1.RendererComponent,
+            scene_component_1.SceneComponent,
             sprite_component_1.SpriteComponent,
             text_component_1.TextComponent,
             filters_component_1.FilterComponent
         ],
         providers: [
             asset_service_1.AssetService,
-            pixi_service_1.PixiService,
-            scene_service_1.SceneService
+            pixi_service_1.PixiService
         ]
     })
 ], PixiModule);

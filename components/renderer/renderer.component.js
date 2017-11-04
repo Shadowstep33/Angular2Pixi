@@ -25,11 +25,6 @@ let RendererComponent = class RendererComponent {
         this.pixi.init(this.width, this.height, canvasEl);
         this.onInit();
     }
-    resetWidthHeight() {
-        this.height = window.innerHeight;
-        this.width = window.innerWidth;
-        console.log('window resize', this.height, this.width);
-    }
 };
 __decorate([
     core_1.ViewChild('canvas'),
@@ -51,12 +46,6 @@ __decorate([
     core_1.Input(),
     __metadata("design:type", Number)
 ], RendererComponent.prototype, "width", void 0);
-__decorate([
-    core_1.HostListener('window:resize'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], RendererComponent.prototype, "resetWidthHeight", null);
 RendererComponent = __decorate([
     core_1.Component({
         selector: 'renderer',

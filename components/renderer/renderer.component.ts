@@ -40,11 +40,12 @@ export class RendererComponent {
 		this.onInit();
 	}
 
-	@HostListener('window:resize')
-	resetWidthHeight() {
-		this.height = window.innerHeight;
-		this.width = window.innerWidth;
-		console.log('window resize', this.height, this.width);
-	}
+	// @HostListener('window:resize')
+	// resetWidthHeight() {
+		// this.height = window.innerHeight;
+		// this.width = window.innerWidth;
+		// this.pixi.renderer.resize(this.width, this.height);
+		// console.log('window resize', this.height, this.width);
+	// }
 
 }

@@ -11,16 +11,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const PIXI = require("pixi.js");
+const renderer_component_1 = require("../renderer/renderer.component");
 /**
 *
 *	Organization for a Scene (collection of layers and sprites)
 *
 **/
-let SceneService = class SceneService {
+let SceneComponent = class SceneComponent {
     constructor() {
         this.scale = 1;
         this.scaleFactor = 1.1;
         this.layers = {};
+        this.mainStage = new PIXI.Container();
+        this.stageUpdated = new core_1.EventEmitter();
         //Functions to execute on move
         this.moveHandlers = {};
         //Functions to execute on click
@@ -28,32 +31,36 @@ let SceneService = class SceneService {
     }
     init(layers) {
         console.log(PIXI);
-        this.mainStage = new PIXI.Container();
+        //Add layers to homescene stage
+        for (var l in layers)
+            this.mainStage.addChild(layers[l]);
         if (layers)
             this.layers = layers;
     }
-    fadeInScene(scene) {
+    fadeInScene() {
+        var self = this;
         return (new Promise((resolve, reject) => {
             let c = setInterval(() => {
-                if (scene.layers.background.alpha >= 1) {
+                if (self.mainStage.alpha >= 1) {
                     clearInterval(c);
                     resolve();
                 }
                 else {
-                    scene.layers.background.alpha += 0.12;
+                    self.mainStage.alpha += 0.12;
                 }
             }, 50);
         }));
     }
-    fadeOutScene(scene) {
+    fadeOutScene() {
+        var self = this;
         return (new Promise((resolve, reject) => {
             let c = setInterval(() => {
-                if (scene.layers.background.alpha <= 0) {
+                if (self.mainStage.alpha <= 0) {
                     clearInterval(c);
                     resolve();
                 }
                 else {
-                    scene.layers.background.alpha -= 0.12;
+                    self.mainStage.alpha -= 0.12;
                 }
             }, 50);
         }));
@@ -110,10 +117,50 @@ let SceneService = class SceneService {
             if (this.mainStage.parent)
                 this.mainStage.parent.removeChild(this.mainStage);
     }
+    resizeStage() {
+        console.log(this);
+        let W = window.innerWidth;
+        let H = window.innerHeight;
+        if (this.renderer) {
+            let renderer = this.renderer.pixi.renderer;
+            let currWidth = this.mainStage.getBounds().width;
+            let currHeight = this.mainStage.getBounds().height;
+            //Get current ratio of stage to renderer
+            let ratio = Math.min(W / renderer.width, H / renderer.height);
+            console.log("Ratio", ratio);
+            //Resize renderer to new window
+            this.renderer.width = W;
+            this.renderer.height = H;
+            renderer.resize(W, H);
+            //Move mainstage to center of screen
+            // this.mainStage.position.set(currWidth/2, currHeight/2);
+            //Scale it up/down to fit the renderer and maintain ratio
+            this.mainStage.scale.set(ratio, ratio);
+            //Pivot so it originates from window center
+            // this.mainStage.pivot.set(W/2, H/2);
+        }
+    }
 };
-SceneService = __decorate([
-    core_1.Injectable(),
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", renderer_component_1.RendererComponent)
+], SceneComponent.prototype, "renderer", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], SceneComponent.prototype, "stageUpdated", void 0);
+__decorate([
+    core_1.HostListener('window:resize'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], SceneComponent.prototype, "resizeStage", null);
+SceneComponent = __decorate([
+    core_1.Component({
+        selector: 'scene',
+        template: '<span></span>'
+    }),
     __metadata("design:paramtypes", [])
-], SceneService);
-exports.SceneService = SceneService;
-//# sourceMappingURL=scene.service.js.map
+], SceneComponent);
+exports.SceneComponent = SceneComponent;
+//# sourceMappingURL=scene.component.js.map

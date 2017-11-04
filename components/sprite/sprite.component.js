@@ -19,15 +19,34 @@ let SpriteComponent = class SpriteComponent {
         this.scale = 1;
         this.font = "Arial";
         this.interactive = true;
-        this.x = 0;
-        this.y = 0;
+        this._x = 0;
+        this._y = 0;
         this.text = '';
         this.container = null;
         this.anim = '';
         this.textSpr = null;
         this.spriteObject = null;
     }
+    set x(val) {
+        this._x = (val) || 0;
+        // if(this.spriteObject)
+        // this.positionSprite();
+    }
+    get x() {
+        return this._x;
+    }
+    set y(val) {
+        this._y = (val) || 0;
+        // if(this.spriteObject)
+        // this.positionSprite();
+    }
+    get y() {
+        return this._y;
+    }
     ngOnInit() {
+        this.init();
+    }
+    init() {
         this.spriteStage = new PIXI.Container();
         this.addSprite(this.imgUrl);
         this.addText(this.text);
@@ -43,15 +62,18 @@ let SpriteComponent = class SpriteComponent {
             let texture = PIXI.Texture.fromImage(img);
             //create sprite
             this.spriteObject = new PIXI.Sprite(texture);
-            this.spriteObject.anchor.x = 0.5,
-                this.spriteObject.anchor.y = 0.5,
-                //positioning and sizing
-                this.spriteObject.scale.set(this.scale);
-            this.spriteObject.position.x = this.x,
-                this.spriteObject.position.y = this.y;
+            this.spriteObject.anchor.x = 0.5;
+            this.spriteObject.anchor.y = 0.5;
+            //positioning and sizing
+            this.positionSprite();
             //add to sprite container
             this.spriteStage.addChild(this.spriteObject);
         }
+    }
+    positionSprite() {
+        this.spriteObject.scale.set(this.scale);
+        this.spriteObject.position.x = this._x,
+            this.spriteObject.position.y = this._y;
     }
     addText(text) {
         if (text.trim() != "") {
@@ -64,8 +86,8 @@ let SpriteComponent = class SpriteComponent {
             });
             this.spriteStage.addChild(t);
             t.scale.set(this.scale);
-            t.position.x = this.x - 30;
-            t.position.y = this.y;
+            t.position.x = this._x - 30;
+            t.position.y = this._y;
             t.anchor.y = 0.5;
             this.textSpr = t;
         }
@@ -143,11 +165,21 @@ __decorate([
 __decorate([
     core_1.Input(),
     __metadata("design:type", Number)
-], SpriteComponent.prototype, "x", void 0);
+], SpriteComponent.prototype, "_x", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number),
+    __metadata("design:paramtypes", [Number])
+], SpriteComponent.prototype, "x", null);
 __decorate([
     core_1.Input(),
     __metadata("design:type", Number)
-], SpriteComponent.prototype, "y", void 0);
+], SpriteComponent.prototype, "_y", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number),
+    __metadata("design:paramtypes", [Number])
+], SpriteComponent.prototype, "y", null);
 __decorate([
     core_1.Input(),
     __metadata("design:type", String)

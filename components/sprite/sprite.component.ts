@@ -19,8 +19,32 @@ export class SpriteComponent {
   @Input() scale: number = 1;
   @Input() font: string = "Arial";
   @Input() interactive: boolean = true;
-  @Input() x: number = 0;
-  @Input() y: number = 0;
+  
+@Input() _x: number = 0;
+@Input()
+set x(val: number) {
+	this._x = (val) || 0;
+	
+	// if(this.spriteObject)
+		// this.positionSprite();
+}
+get x(): number {
+	return this._x;
+}
+
+@Input() _y: number = 0;
+@Input()
+set y(val: number) {
+	this._y = (val) || 0;
+
+	// if(this.spriteObject)
+		// this.positionSprite();
+}
+get y(): number {
+	return this._y;
+}
+	
+	
   @Input() text: string = '';
   @Input() container: PIXI.Container = null;
   @Input() anim: string = '';
@@ -34,6 +58,10 @@ export class SpriteComponent {
   }
 
   ngOnInit(){
+	this.init();
+  }
+  
+  init(){
 	
 	this.spriteStage = new PIXI.Container();
 	
@@ -56,17 +84,21 @@ export class SpriteComponent {
 
 		//create sprite
 		this.spriteObject = new PIXI.Sprite(texture);
-		this.spriteObject.anchor.x = 0.5,
-		this.spriteObject.anchor.y = 0.5,
+		this.spriteObject.anchor.x = 0.5;
+		this.spriteObject.anchor.y = 0.5;
 		
 		//positioning and sizing
-		this.spriteObject.scale.set(this.scale);
-		this.spriteObject.position.x = this.x,
-		this.spriteObject.position.y = this.y;
+		this.positionSprite();
 		
 		//add to sprite container
 		this.spriteStage.addChild(this.spriteObject);  
 	} 
+  }
+  
+  positionSprite(){
+	this.spriteObject.scale.set(this.scale);
+	this.spriteObject.position.x = this._x,
+	this.spriteObject.position.y = this._y;
   }
   
   addText(text){
@@ -81,8 +113,8 @@ export class SpriteComponent {
 		
 		this.spriteStage.addChild(t);
 		t.scale.set(this.scale);
-		t.position.x = this.x - 30;
-		t.position.y = this.y;
+		t.position.x = this._x - 30;
+		t.position.y = this._y;
 		t.anchor.y = 0.5;
 		
 		this.textSpr = t;
