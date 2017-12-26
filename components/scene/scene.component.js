@@ -83,7 +83,7 @@ let SceneComponent = class SceneComponent {
                 return;
         }
     }
-    deregisterCallback(eventStr, id) {
+    deregisterHandler(eventStr, id) {
         switch (eventStr) {
             case 'click':
                 delete this.clickHandlers[id];

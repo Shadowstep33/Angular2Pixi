@@ -21,7 +21,7 @@ export declare class SceneComponent {
     fadeOutScene(): Promise<{}>;
     blurScene(scene: any): void;
     registerHandler(eventStr: any, id: any, fn: any): void;
-    deregisterCallback(eventStr: any, id: any): void;
+    deregisterHandler(eventStr: any, id: any): void;
     stageClick(data: any): void;
     /**
     *	Wipe all layers of children
