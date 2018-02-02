@@ -1,3 +1,5 @@
-export * from './pixi.module';
-export * from './providers';
-export * from './components';
+export declare class PixiModule {
+}
+export * from './src/pixi.module';
+export * from './src/providers';
+export * from './src/components';
