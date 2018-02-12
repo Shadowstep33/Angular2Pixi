@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
@@ -22,125 +23,161 @@ const tempLibFolder = path.join(compilationFolder, 'lib');
 const es5OutputFolder = path.join(compilationFolder, 'lib-es5');
 const es2015OutputFolder = path.join(compilationFolder, 'lib-es2015');
 
-return Promise.resolve()
-// Copy library to temporary folder and inline html/css.
-.then(() => _relativeCopy(`**/*`, srcFolder, tempLibFolder)
-.then(() => inlineResources(tempLibFolder))
-.then(() => console.log('Inlining succeeded.'))
-)
-// Compile to ES2015.
-.then(() => ngc({ project: `${tempLibFolder}/tsconfig.lib.json` })
-.then(exitCode => exitCode === 0 ? Promise.resolve() : Promise.reject())
-.then(() => console.log('ES2015 compilation succeeded.'))
-)
-// Compile to ES5.
-.then(() => ngc({ project: `${tempLibFolder}/tsconfig.es5.json` })
-.then(exitCode => exitCode === 0 ? Promise.resolve() : Promise.reject())
-.then(() => console.log('ES5 compilation succeeded.'))
-)
-// Copy typings and metadata to `dist/` folder.
-.then(() => Promise.resolve()
-.then(() => _relativeCopy('**/*.d.ts', es2015OutputFolder, distFolder))
-.then(() => _relativeCopy('**/*.metadata.json', es2015OutputFolder, distFolder))
-.then(() => console.log('Typings and metadata copy succeeded.'))
-)
-// Bundle lib.
-.then(() => {
-	// Base configuration.
-	const es5Entry = path.join(es5OutputFolder, `${libName}.js`);
-	const es2015Entry = path.join(es2015OutputFolder, `${libName}.js`);
-	const rollupBaseConfig = {
-		moduleName: camelCase(libName),
-		sourceMap: true,
-		// ATTENTION:
-		// Add any dependency or peer dependency your library to `globals` and `external`.
-		// This is required for UMD bundle users.
-		globals: {
-			// The key here is library name, and the value is the the name of the global variable name
-			// the window object.
-			// See https://github.com/rollup/rollup/wiki/JavaScript-API#globals for more.
-			'@angular/core': 'ng.core'
-		},
-		external: [
-			// List of dependencies
-			// See https://github.com/rollup/rollup/wiki/JavaScript-API#external for more.
-			'@angular/core'
-		],
-		plugins: [
-			commonjs({
-				include: ['node_modules/rxjs/**']
-			}),
-			sourcemaps(),
-			nodeResolve({ jsnext: true, module: true })
-		]
-	};
+(async () => {
+	console.info('Starting compilation');
+	try{
+		// Copy library to temporary folder and inline html/css.
+		try{
+			await _relativeCopy(`**/*`, srcFolder, tempLibFolder);
+			await inlineResources(tempLibFolder);
+			console.info('Inlining succeeded.');
+		} catch(error){
+			error.message = 'Inlining failed: ' + error.message;
+			throw error;
+		}
 
-	// UMD bundle.
-	const umdConfig = Object.assign({}, rollupBaseConfig, {
-		entry: es5Entry,
-		dest: path.join(distFolder, `bundles`, `${libName}.umd.js`),
-		format: 'umd',
-	});
+		// Compile to ES2015.
+		if(await ngc(['--project', `${tempLibFolder}/tsconfig.lib.json`]) !== 0){
+			throw new Error('ES2015 compilation failed');
+		}
+		console.info('ES2015 compilation succeeded.');
 
-	// Minified UMD bundle.
-	const minifiedUmdConfig = Object.assign({}, rollupBaseConfig, {
-		entry: es5Entry,
-		dest: path.join(distFolder, `bundles`, `${libName}.umd.min.js`),
-		format: 'umd',
-		plugins: rollupBaseConfig.plugins.concat([uglify({})])
-	});
+		// Compile to ES5.
+		if(await ngc(['--project', `${tempLibFolder}/tsconfig.es5.json`]) !== 0){
+			throw new Error('ES5 compilation failed');
+		}
+		console.info('ES5 compilation succeeded.');
 
-	// ESM+ES5 flat module bundle.
-	const fesm5config = Object.assign({}, rollupBaseConfig, {
-		entry: es5Entry,
-		dest: path.join(distFolder, `${libName}.es5.js`),
-		format: 'es'
-	});
+		// Copy typings and metadata to `dist/` folder.
+		try{
+			_relativeCopy('**/*.d.ts', es2015OutputFolder, distFolder);
+			_relativeCopy('**/*.metadata.json', es2015OutputFolder, distFolder);
+			console.info('Typings and metadata copy succeeded.');
+		} catch(error){
+			error.message = 'Typings and metadata copy failed: ' + error.message;
+			throw error;
+		}
 
-	// ESM+ES2015 flat module bundle.
-	const fesm2015config = Object.assign({}, rollupBaseConfig, {
-		entry: es2015Entry,
-		dest: path.join(distFolder, `${libName}.js`),
-		format: 'es'
-	});
+		// Bundle lib.
+		try {
+			// Base configuration.
+			const es5Entry = path.join(es5OutputFolder, `${libName}.js`);
+			const es2015Entry = path.join(es2015OutputFolder, `${libName}.js`);
+			const rollupBaseConfig = {
+				output: {
+					name: camelCase(libName),
+					// ATTENTION:
+					// Add any dependency or peer dependency your library to `globals` and `external`.
+					// This is required for UMD bundle users.
+					globals: {
+						// The key here is library name, and the value is the the name of the global variable name
+						// the window object.
+						// See https://github.com/rollup/rollup/wiki/JavaScript-API#globals for more.
+						'@angular/core': 'ng.core'
+					},
+					sourcemap: true,
+				},
+				external: [
+					// List of dependencies
+					// See https://github.com/rollup/rollup/wiki/JavaScript-API#external for more.
+					'@angular/core'
+				],
+				plugins: [
+					commonjs({
+						include: ['node_modules/rxjs/**']
+					}),
+					sourcemaps(),
+					nodeResolve({ jsnext: true, module: true })
+				]
+			};
 
-	const allBundles = [
-		umdConfig,
-		minifiedUmdConfig,
-		fesm5config,
-		fesm2015config
-	].map(cfg => rollup.rollup(cfg).then(bundle => bundle.write(cfg)));
+			// UMD bundle.
+			const umdConfig = _.defaultsDeep({}, {
+				input: es5Entry,
+				output: {
+					file: path.join(distFolder, `bundles`, `${libName}.umd.js`),
+					format: 'umd',
+				},
+			}, rollupBaseConfig);
 
-	return Promise.all(allBundles)
-	.then(() => console.log('All bundles generated successfully.'))
-})
-// Copy package files
-.then(() => Promise.resolve()
-.then(() => _relativeCopy('LICENSE', rootFolder, distFolder))
-.then(() => _relativeCopy('package.json', rootFolder, distFolder))
-.then(() => _relativeCopy('README.md', rootFolder, distFolder))
-.then(() => console.log('Package files copy succeeded.'))
-)
-.catch(e => {
-	console.error('Build failed. See below for errors.\n');
-	console.error(e);
-	process.exit(1);
-});
+			// Minified UMD bundle.
+			const minifiedUmdConfig = _.defaultsDeep({}, {
+				input: es5Entry,
+				output: {
+					file: path.join(distFolder, `bundles`, `${libName}.umd.min.js`),
+					format: 'umd',
+				},
+				plugins: rollupBaseConfig.plugins.concat([uglify({})])
+			}, rollupBaseConfig);
+
+			// ESM+ES5 flat module bundle.
+			const fesm5config = _.defaultsDeep({}, {
+				input: es5Entry,
+				output: {
+					file: path.join(distFolder, `${libName}.es5.js`),
+					format: 'es'
+				},
+			}, rollupBaseConfig);
+
+			// ESM+ES2015 flat module bundle.
+			const fesm2015config = _.defaultsDeep({}, {
+				input: es2015Entry,
+				output: {
+					file: path.join(distFolder, `${libName}.js`),
+					format: 'es'
+				},
+			}, rollupBaseConfig);
+
+			const allBundles = [
+				umdConfig,
+				minifiedUmdConfig,
+				fesm5config,
+				fesm2015config
+			].map(async cfg => {
+				const bundle = await rollup.rollup(cfg);
+				return bundle.write(cfg.output);
+			});
+
+			await Promise.all(allBundles);
+			console.info('All bundles generated successfully.');
+		} catch(error){
+			error.message = 'Bundles generation failed: ' + error.message;
+			throw error;
+		}
+
+		// Copy package files
+		try{
+			_relativeCopy('LICENSE', rootFolder, distFolder);
+			_relativeCopy('package.json', rootFolder, distFolder);
+			_relativeCopy('README.md', rootFolder, distFolder);
+			console.info('Package files copy succeeded.');
+		} catch(error){
+			error.message = 'Package files copy failed: ' + error.message;
+			throw error;
+		}
+	} catch(error){
+		console.error('Build failed. See below for errors.\n');
+		console.error(error);
+		process.exit(1);
+	}
+})();
 
 
 // Copy files maintaining relative paths.
-function _relativeCopy(fileGlob, from, to) {
+async function _relativeCopy(fileGlob, from, to) {
 	return new Promise((resolve, reject) => {
 		glob(fileGlob, { cwd: from, nodir: true }, (err, files) => {
-			if (err) reject(err);
+			if (err){
+				return reject(err);
+			}
 			files.forEach(file => {
 				const origin = path.join(from, file);
 				const dest = path.join(to, file);
 				const data = fs.readFileSync(origin, 'utf-8');
 				_recursiveMkDir(path.dirname(dest));
 				fs.writeFileSync(dest, data);
-				resolve();
-			})
+			});
+			return resolve();
 		})
 	});
 }
