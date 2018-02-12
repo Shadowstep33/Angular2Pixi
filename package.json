@@ -2,12 +2,32 @@
   "name": "angular2pixi",
   "version": "0.2.0",
   "description": "Markup framework for creating PIXI scenes in Angular 2",
-  "main": "./index.ts",
-  "types": "./index.d.ts",
+  "main": "./bundles/angular2pixi.umd.js",
+  "module": "./angular2pixi.es5.js",
+  "es2015": "./angular2pixi.js",
+  "typings": "./angular2pixi.d.ts",
   "scripts": {
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "ngc-build": "ngc"
+    "clean": "rimraf out-tsc dist/*",
+    "prebuild": "npm run clean",
+    "build": "node tools/build.js",
+    "build-demo": "tsc -p src/demo/",
+    "build-demo:watch": "tsc -p src/demo/ -w",
+    "serve": "lite-server -c=bs-config.json",
+    "prestart": "npm run build-demo",
+    "start": "concurrently \"npm run build-demo:watch\" \"npm run serve\"",
+    "build-test": "tsc -p src/lib/tsconfig.spec.json",
+    "build-test:watch": "tsc -p src/lib/tsconfig.spec.json -w",
+    "pretest": "npm run build-test",
+    "test": "concurrently \"npm run build-test:watch\" \"karma start karma.conf.js\"",
+    "coverage": "karma start karma-coverage.conf.js --single-run",
+    "pretest:once": "npm run build-test",
+    "test:once": "karma start karma.conf.js --single-run",
+    "preintegration": "npm run build && cd integration && npm run clean && npm install",
+    "integration": "npm run integration:aot && npm run integration:jit",
+    "integration:jit": "cd integration && npm run e2e",
+    "integration:aot": "cd integration && npm run e2e:aot",
+    "lint": "tslint ./src/**/*.ts -t verbose",
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",
@@ -34,6 +54,13 @@
     "rxjs": "^5.5.6"
   },
   "devDependencies": {
+    "camelcase": "^4.1.0",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.55.5",
+    "rollup-plugin-commonjs": "^8.3.0",
+    "rollup-plugin-node-resolve": "^3.0.2",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-uglify": "^3.0.0",
     "typescript": "^2.4.2"
   }
 }
