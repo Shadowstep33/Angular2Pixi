@@ -23,7 +23,7 @@ export class AssetService {
   init(){
   }
 
-  registerCallback(id, fn){
+  registerCallback(id: string, fn: Function){
     this.callbacks[id] = fn;
 
     //If assets are loaded, run callback but delete callback
@@ -34,7 +34,7 @@ export class AssetService {
     }
   }
 
-  deregisterCallback(id){
+  deregisterCallback(id: string){
     delete this.callbacks[id];
   }
 
@@ -46,7 +46,7 @@ export class AssetService {
 
   loadAssets(){
 	let self = this;
-	
+
     self.loader.load();
 
     self.loader.once("complete",function(res){
@@ -65,7 +65,7 @@ export class AssetService {
   }
 
   //only works for horizontal spritesheets
-  getFramesFromSpriteSheet(texture, colX, colY, rowStart) {
+  getFramesFromSpriteSheet(texture: PIXI.Texture, colX: number, colY: number, rowStart: number) {
     var frames = [];
 
 
@@ -79,7 +79,7 @@ export class AssetService {
         texture.baseTexture,
         new PIXI.Rectangle(i, startY, frameWidth, frameHeight))
       );
-    } 
+    }
 
     return frames;
   }

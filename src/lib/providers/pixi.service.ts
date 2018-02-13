@@ -18,27 +18,27 @@ export class PixiService {
   	transparent: true,
   	antialias: true
   });
-  
+
 	ratio = 0;
 	starting_width = 0;
 	starting_width_of_window = 0;
 	starting_height = 0;
 	starting_height_of_window = 0;
-	
+
   renderer: any;
   worldStage: any;
   time = 0;
   last_time = 0;
-  
-  anim_loop_callbacks = [];
-  to_render = [];
+
+  anim_loop_callbacks: any = [];
+  to_render: any = [];
 
 
   constructor() {
     console.log('Hello Pixi Provider');
   }
 
-  animate(t){
+  animate(t: any){
 	let self = this;
     this.time = (new Date()).getTime()/1000;
 
@@ -56,13 +56,13 @@ export class PixiService {
       this.renderer.render(this.worldStage);
     }
     this.last_time = this.time;
-	
+
 	requestAnimationFrame( (t) => {
 		self.animate(t);
 	});
   }
 
-  appendRenderer(id){
+  appendRenderer(id: string){
     //Add canvas to page
     var el = document.getElementById(id);
 
@@ -70,7 +70,7 @@ export class PixiService {
     el.appendChild(this.renderer.view);
   }
 
-  sizeCollection(el, args){
+  sizeCollection(el: any, args: any){
 
     //Get current ratio
     var ratio = this.renderer.width / this.renderer.height;
@@ -94,7 +94,7 @@ export class PixiService {
 
   }
 
-  init(w,h, el){
+  init(w?:number,h?: number, el?: HTMLCanvasElement){
     //Initialize game renderer
     if(typeof w == "undefined" || w == 0)
       w = window.innerWidth;
@@ -106,22 +106,22 @@ export class PixiService {
     this.renderer = PIXI.autoDetectRenderer({
 		width: w,
 		height: h,
-		transparent: true, 
-		autoResize: false, 
-		resolution: 1, 
-		view: el 
+		transparent: true,
+		autoResize: false,
+		resolution: 1,
+		view: el
 	});
     this.worldStage = new PIXI.Container();
 
     //Initialize game camera
-    var w = this.renderer.width;
-    var h = this.renderer.height;
+    var widthRenderer = this.renderer.width;
+    var heightRenderer = this.renderer.height;
 
-    this.ratio = w/h;
-    this.starting_width = w;
-    this.starting_width_of_window = w/window.innerWidth;
-    this.starting_height = h;
-    this.starting_height_of_window = h/window.innerHeight;
+    this.ratio = widthRenderer/heightRenderer;
+    this.starting_width = widthRenderer;
+    this.starting_width_of_window = widthRenderer/window.innerWidth;
+    this.starting_height = heightRenderer;
+    this.starting_height_of_window = heightRenderer/window.innerHeight;
 
     this.animate(0);
   }

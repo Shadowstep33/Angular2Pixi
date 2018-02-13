@@ -18,10 +18,10 @@ export class SceneComponent {
   scaleFactor = 1.1;
   layers = {};
   mainStage: PIXI.Container = new PIXI.Container();
-	
+
   @Input() renderer: RendererComponent;
   @Output() stageUpdated = new EventEmitter();
-  
+
   //Functions to execute on move
   moveHandlers = {};
 
@@ -32,17 +32,17 @@ export class SceneComponent {
   }
 
   init(layers?: any){
-  
+
 	console.log(PIXI);
-	
+
 	if(layers)
 		this.layers = layers;
-		
+
 	//Add layers to homescene stage
 	for(var l in this.layers)
 		this.mainStage.addChild(this.layers[l]);
-	
-	this.renderer.pixi.worldStage.addChild(this.mainStage);	
+
+	this.renderer.pixi.worldStage.addChild(this.mainStage);
   }
 
 	fadeInScene(){
@@ -51,39 +51,39 @@ export class SceneComponent {
 			let c = setInterval(()=>{
 				if(self.mainStage.alpha >= 1){
 					clearInterval(c);
-					
+
 					resolve();
 				}else{
 					self.mainStage.alpha += 0.12;
 				}
 			}, 50);
 		}));
-		
+
 	}
-	
+
 	fadeOutScene(){
 		var self = this;
 		return (new Promise( (resolve, reject) => {
 			let c = setInterval(()=>{
 				if(self.mainStage.alpha <= 0){
 					clearInterval(c);
-					
+
 					resolve();
 				}else{
 					self.mainStage.alpha -= 0.12;
 				}
 			}, 50);
 		}));
-		
+
 	}
 
-	blurScene(scene){
+	blurScene(scene: PIXI.Container){
 		// console.log(PIXI.filters);
 		// this.filter = new PIXI.filters.BloomFilter();
 		// this.spriteStage.filters = [this.filter];
 	}
-	
-  registerHandler(eventStr, id, fn){
+
+  registerHandler(eventStr: string, id: string, fn: (arg: any) => any){
     switch(eventStr){
       case 'click':
         this.clickHandlers[id] = fn;
@@ -96,7 +96,7 @@ export class SceneComponent {
     }
   }
 
-  deregisterHandler(eventStr, id){
+  deregisterHandler(eventStr: string, id: string){
     switch(eventStr){
       case 'click':
         delete this.clickHandlers[id];
@@ -109,7 +109,7 @@ export class SceneComponent {
     }
   }
 
-  stageClick(data){
+  stageClick(data: any){
     var pos = data.data.getLocalPosition(self);
 
     console.log("Click pos: ", pos);
@@ -128,38 +128,38 @@ export class SceneComponent {
 
     this.layers = {};
   };
-  
+
   unload(){
 	this.wipe();
-	
+
 	if(this.mainStage)
 	if(this.mainStage.parent)
 		this.mainStage.parent.removeChild(this.mainStage);
   }
-  
+
   @HostListener('window:resize')
   resizeStage(){
 	console.log(this);
 	let W = window.innerWidth;
 	let H = window.innerHeight;
-	
+
 	if(this.renderer){
 		let renderer = this.renderer.pixi.renderer;
 		let currWidth = this.mainStage.getBounds().width;
 		let currHeight = this.mainStage.getBounds().height;
-		
+
 		//Get current ratio of stage to renderer
 		let ratio = Math.min(W / renderer.width, H / renderer.height);
 		console.log("Ratio", ratio);
-		
+
 		//Resize renderer to new window
 		this.renderer.width = W;
 		this.renderer.height = H;
 		renderer.resize(W, H);
-		
+
 		//Move mainstage to center of screen
 		// this.mainStage.position.set(currWidth/2, currHeight/2);
-		
+
 		//Scale it up/down to fit the renderer and maintain ratio
 		this.mainStage.scale.set(ratio, ratio);
 
