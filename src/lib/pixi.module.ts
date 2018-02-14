@@ -1,34 +1,34 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import { PixiService } from './providers/pixi.service';
-import { AssetService } from './providers/asset.service';
+import { AssetService, PixiService } from './providers';
 
-import { RendererComponent } from './components/renderer/renderer.component';
-import { SceneComponent } from './components/scene/scene.component';
-import { SpriteComponent } from './components/sprite/sprite.component';
-import { TextComponent } from './components/text/text.component';
-import { FilterComponent } from './components/filters/filters.component';
+import { FilterComponent, RendererComponent, SceneComponent, SpriteComponent, TextComponent } from './components';
+
+const PIXI_DIRECTIVES = [
+	RendererComponent,
+	SceneComponent,
+	SpriteComponent,
+	TextComponent,
+	FilterComponent
+];
 
 @NgModule({
-  declarations: [
-    RendererComponent,
-    SceneComponent,
-    SpriteComponent,
-    TextComponent,
-    FilterComponent
-  ],
-  imports: [
-  ],
-  exports: [
-    RendererComponent,
-    SceneComponent,
-    SpriteComponent,
-    TextComponent,
-    FilterComponent
-  ],
-  providers: [
-    AssetService,
-    PixiService
-  ]
+	declarations: PIXI_DIRECTIVES,
+	exports: PIXI_DIRECTIVES,
+	providers: [AssetService, PixiService],
 })
-export class PixiModule { }
+export class PixiModule {
+	static forRoot(): ModuleWithProviders {
+		return {
+			ngModule: PixiModule,
+			providers: [
+				AssetService,
+				PixiService,
+				// { provide: MyService, useFactory: InitMyService, deps:[Router, Items] }
+			]
+		};
+	}
+}
+
+export {AssetService, PixiService, FilterComponent, RendererComponent, SceneComponent, SpriteComponent, TextComponent };

@@ -1,9 +1,9 @@
 import {
-  Component, 
-  Input, 
-  Output, 
-  ElementRef, 
-  AfterViewInit, 
+  Component,
+  Input,
+  Output,
+  ElementRef,
+  AfterViewInit,
   ViewChild,
   HostListener,
   EventEmitter
@@ -18,7 +18,7 @@ import { PixiService } from '../../providers/pixi.service';
 export class RendererComponent {
 	@ViewChild('canvas') public canvas: ElementRef;
 	@Output() rendererReady = new EventEmitter();
-	private cx: CanvasRenderingContext2D;  
+	private cx: CanvasRenderingContext2D;
 
 	@Input() onInit = (() => {
 		console.log("Renderer default oninit");
@@ -30,13 +30,13 @@ export class RendererComponent {
 		public pixi: PixiService
 	){
 	}
-	
+
 	ngOnInit(){
 		const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-		
+
 		//Initialize PIXI rendering stuff
-		this.pixi.init(this.width, this.height, canvasEl);	
-		
+		this.pixi.init(this.width, this.height, canvasEl);
+
 		this.onInit();
 	}
 

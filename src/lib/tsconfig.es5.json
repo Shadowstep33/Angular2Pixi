@@ -7,7 +7,7 @@
     "types": []
   },
   "files": [
-    "./index.ts"
+    "./pixi.module.ts"
   ],
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,
