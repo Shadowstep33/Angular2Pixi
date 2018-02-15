@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "target": "es5",
+    "outDir": "../../out-tsc/lib-es5/",
+    "baseUrl": "",
+    "types": []
+  },
+  "files": [
+    "./pixi.module.ts"
+  ],
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true,
+    "flatModuleOutFile": "angular2pixi.js",
+    "flatModuleId": "angular2pixi",
+    "genDir": "../../out-tsc/lib-gen-dir/"
+  }
+}
