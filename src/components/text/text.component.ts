@@ -17,6 +17,7 @@ import { SpriteComponent } from '../sprite/sprite.component';
 export class TextComponent extends SpriteComponent {
 
   @Input() fontSize: string = "48px";
+  @Input() anchor = { x: 0.5, y: 0.5 };
 	@Input()
 	set valueToShow(val: string) {
 		this.text = (val) || '';	
@@ -26,45 +27,46 @@ export class TextComponent extends SpriteComponent {
 	}
 
   constructor() {
-	super();
+    super();
   }
 
   ngOnInit(){
-	super.ngOnInit.bind(this)();
-	
-	this.addText(this.text);
-	
-	console.log("Anim ",this.anim)
-	if(this.anim == 'hover')
-		this.slowHover();
-	
-	if(this.handleClick && this.interactive)
-		this.addInteraction(this.handleClick);
-  }
- 
-  addText(text: string){
-	if(this.textSpr){
-		this.textSpr.text = text;
-	}else{
-		if(text.trim() != ""){
-			let t = new PIXI.Text(text,{
-				fontFamily: this.font, 
-				fontSize: this.fontSize, 
-				fill:"white", 
-				stroke: "#000000", 
-				strokeThickness: 6
-			});
-			
-			this.spriteStage.addChild(t);
-			t.scale.set(this.scale);
-			t.position.x = this.x - 30;
-			t.position.y = this.y;
-			t.anchor.y = 0.5;
-			
-			this.textSpr = t;
-			console.log(t);
-		}
-	}
+    super.ngOnInit.bind(this)();
+    
+    this.addText(this.text);
+    
+    console.log("Anim ",this.anim)
+    if(this.anim == 'hover')
+      this.slowHover();
+    
+    if(this.handleClick && this.interactive)
+      this.addInteraction(this.handleClick);
+    }
+   
+    addText(text: string){
+    if(this.textSpr){
+      this.textSpr.text = text;
+    }else{
+      if(text.trim() != ""){
+        let t = new PIXI.Text(text,{
+          fontFamily: this.font, 
+          fontSize: this.fontSize, 
+          fill:"white", 
+          stroke: "#000000", 
+          strokeThickness: 6
+        });
+        
+        this.spriteStage.addChild(t);
+        t.scale.set(this.scale);
+        t.position.x = this.x - 30;
+        t.position.y = this.y;
+        t.anchor.x = this.anchor.x;
+        t.anchor.y = this.anchor.y;
+        
+        this.textSpr = t;
+        console.log(t);
+      }
+    }
   }
   
   addInteraction(cb){

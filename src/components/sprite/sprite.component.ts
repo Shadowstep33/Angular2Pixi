@@ -96,9 +96,11 @@ get y(): number {
   }
   
   positionSprite(){
-	this.spriteObject.scale.set(this.scale);
-	this.spriteObject.position.x = this._x,
-	this.spriteObject.position.y = this._y;
+    if(!this.spriteObject) return;
+    
+    this.spriteObject.scale.set(this.scale);
+    this.spriteObject.position.x = this._x,
+    this.spriteObject.position.y = this._y;
   }
   
   addText(text){
