@@ -42,15 +42,15 @@ export class PixiService {
 	let self = this;
     this.time = (new Date()).getTime()/1000;
 
-    var deltaTime = this.time - this.last_time;
+    let deltaTime = this.time - this.last_time;
 
     if(typeof this.worldStage != "undefined")
     if(this.worldStage){
 
-      for(var s in this.to_render)
+      for(let s in this.to_render)
         this.to_render[s].update(deltaTime / 60.0);
 
-      for(var c in this.anim_loop_callbacks)
+      for(let c in this.anim_loop_callbacks)
         this.anim_loop_callbacks[c]();
 
       this.renderer.render(this.worldStage);
@@ -64,7 +64,7 @@ export class PixiService {
 
   appendRenderer(id){
     //Add canvas to page
-    var el = document.getElementById(id);
+    let el = document.getElementById(id);
 
     if(el)
     el.appendChild(this.renderer.view);
@@ -73,19 +73,19 @@ export class PixiService {
   sizeCollection(el, args){
 
     //Get current ratio
-    var ratio = this.renderer.width / this.renderer.height;
+    let ratio = this.renderer.width / this.renderer.height;
 
     //Get current width
-    var old_w = this.renderer.width;
+    let old_w = this.renderer.width;
 
     //Get new width
     if(typeof args == "undefined")
-      var w = el.width();
+      let w = el.width();
     else
-      var w = args.width;
+      let w = args.width;
 
     //Resize to match width
-    var perChange = this.worldStage.scale.x * ((old_w - w) / old_w);
+    let perChange = this.worldStage.scale.x * ((old_w - w) / old_w);
     this.renderer.resize(w, window.innerHeight );
 
     //Scale Stage based on % change of screen width
@@ -114,8 +114,8 @@ export class PixiService {
     this.worldStage = new PIXI.Container();
 
     //Initialize game camera
-    var w = this.renderer.width;
-    var h = this.renderer.height;
+    let w = this.renderer.width;
+    let h = this.renderer.height;
 
     this.ratio = w/h;
     this.starting_width = w;

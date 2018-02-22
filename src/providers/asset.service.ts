@@ -39,7 +39,7 @@ export class AssetService {
   }
 
   runCallbacks(){
-    for(var c in this.callbacks){
+    for(let c in this.callbacks){
       this.callbacks[c]();
     }
   }
@@ -66,14 +66,14 @@ export class AssetService {
 
   //only works for horizontal spritesheets
   getFramesFromSpriteSheet(texture, colX, colY, rowStart) {
-    var frames = [];
+    let frames = [];
 
 
-    var frameWidth = Math.round(texture.width/colX);
-    var frameHeight = Math.round(texture.height/colY);
-    var startY = Math.min(frameHeight * rowStart, texture.height-frameHeight);
+    let frameWidth = Math.round(texture.width/colX);
+    let frameHeight = Math.round(texture.height/colY);
+    let startY = Math.min(frameHeight * rowStart, texture.height-frameHeight);
 
-    for(var i = 0; i < texture.width-frameWidth; i+=frameWidth) {
+    for(let i = 0; i < texture.width-frameWidth; i+=frameWidth) {
 
       frames.push(new PIXI.Texture(
         texture.baseTexture,

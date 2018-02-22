@@ -39,14 +39,14 @@ export class SceneComponent {
 		this.layers = layers;
 		
 	//Add layers to homescene stage
-	for(var l in this.layers)
+	for(let l in this.layers)
 		this.mainStage.addChild(this.layers[l]);
 	
 	this.renderer.pixi.worldStage.addChild(this.mainStage);	
   }
 
 	fadeInScene(){
-		var self = this;
+		let self = this;
 		return (new Promise( (resolve, reject) => {
 			let c = setInterval(()=>{
 				if(self.mainStage.alpha >= 1){
@@ -62,7 +62,7 @@ export class SceneComponent {
 	}
 	
 	fadeOutScene(){
-		var self = this;
+		let self = this;
 		return (new Promise( (resolve, reject) => {
 			let c = setInterval(()=>{
 				if(self.mainStage.alpha <= 0){
@@ -110,10 +110,10 @@ export class SceneComponent {
   }
 
   stageClick(data){
-    var pos = data.data.getLocalPosition(self);
+    let pos = data.data.getLocalPosition(self);
 
     console.log("Click pos: ", pos);
-    for(var c in this.clickHandlers)
+    for(let c in this.clickHandlers)
       this.clickHandlers[c](pos);
 
   };
@@ -123,7 +123,7 @@ export class SceneComponent {
   *
   **/
   wipe(){
-    for(var l in this.layers)
+    for(let l in this.layers)
       this.layers[l].removeChildren();
 
     this.layers = {};

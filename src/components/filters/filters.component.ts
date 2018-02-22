@@ -29,7 +29,7 @@ export class FilterComponent {
       case 'blur':
         this.filter = new PIXI.filters.BlurFilter();
         
-        for(var c in this.config)
+        for(let c in this.config)
           this.filter[c] = this.config[c];
           
         break;
