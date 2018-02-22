@@ -78,11 +78,11 @@ export class PixiService {
     //Get current width
     let old_w = this.renderer.width;
 
+    let w = el.width();
+    
     //Get new width
-    if(typeof args == "undefined")
-      let w = el.width();
-    else
-      let w = args.width;
+    if(typeof args != "undefined")
+      w = args.width;
 
     //Resize to match width
     let perChange = this.worldStage.scale.x * ((old_w - w) / old_w);
@@ -94,23 +94,23 @@ export class PixiService {
 
   }
 
-  init(w,h, el){
+  init(width, height, el){
     //Initialize game renderer
-    if(typeof w == "undefined" || w == 0)
-      w = window.innerWidth;
+    if(typeof width == "undefined" || width == 0)
+      width = window.innerWidth;
 
-    if(typeof h == "undefined" || h == 0)
-      h = window.innerHeight;
+    if(typeof height == "undefined" || height == 0)
+      height = window.innerHeight;
 
     //Initialize game container
     this.renderer = PIXI.autoDetectRenderer({
-		width: w,
-		height: h,
-		transparent: true, 
-		autoResize: false, 
-		resolution: 1, 
-		view: el 
-	});
+      width: width,
+      height: height,
+      transparent: true, 
+      autoResize: false, 
+      resolution: 1, 
+      view: el 
+    });
     this.worldStage = new PIXI.Container();
 
     //Initialize game camera
