@@ -8,6 +8,7 @@ import { SceneComponent } from './components/scene/scene.component';
 import { SpriteComponent } from './components/sprite/sprite.component';
 import { TextComponent } from './components/text/text.component';
 import { FilterComponent } from './components/filters/filters.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { FilterComponent } from './components/filters/filters.component';
     SceneComponent,
     SpriteComponent,
     TextComponent,
-    FilterComponent
+    FilterComponent,
+    MenuComponent,
   ],
   imports: [
   ],
@@ -24,7 +26,8 @@ import { FilterComponent } from './components/filters/filters.component';
     SceneComponent,
     SpriteComponent,
     TextComponent,
-    FilterComponent
+    FilterComponent,
+    MenuComponent,
   ],
   providers: [
     AssetService,
@@ -32,3 +35,6 @@ import { FilterComponent } from './components/filters/filters.component';
   ]
 })
 export class PixiModule { }
+
+export * from './providers';
+export * from './components';

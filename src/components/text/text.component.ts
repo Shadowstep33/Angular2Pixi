@@ -53,7 +53,7 @@ export class TextComponent extends SpriteComponent {
           fontSize: this.fontSize, 
           fill:"white", 
           stroke: "#000000", 
-          strokeThickness: 6
+          strokeThickness: 4
         });
         
         this.spriteStage.addChild(t);

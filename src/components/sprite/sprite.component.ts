@@ -45,9 +45,11 @@ get y(): number {
 }
 	
 	
+  @Input() fontSize: string = "48px";
   @Input() text: string = '';
   @Input() container: PIXI.Container = null;
   @Input() anim: string = '';
+  @Input() tAnchor = { x: 0.5, y: 0.5 };
   
   spriteStage: PIXI.Container;
   textSpr: PIXI.Text = null;
@@ -107,17 +109,17 @@ get y(): number {
 	if(text.trim() != ""){
 		let t = new PIXI.Text(text,{
 			fontFamily: this.font, 
-			fontSize:"64px", 
+			fontSize: this.fontSize, 
 			fill:"white", 
 			stroke: "#000000", 
-			strokeThickness: 6
+			strokeThickness: 4
 		});
 		
 		this.spriteStage.addChild(t);
-		t.scale.set(this.scale);
 		t.position.x = this._x - 30;
 		t.position.y = this._y;
-		t.anchor.y = 0.5;
+		t.anchor.x = this.tAnchor.x;
+		t.anchor.y = this.tAnchor.x;
 		
 		this.textSpr = t;
 	}

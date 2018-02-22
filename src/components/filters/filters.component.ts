@@ -26,26 +26,24 @@ export class FilterComponent {
 
   ngOnInit(){
     switch(this.filterName){
-		case 'blur':
-			this.filter = new PIXI.filters.BlurFilter();
-			
-			for(var c in this.config)
-				this.filter[c] = this.config[c];
-				
-			break;
-	}
-	
-	console.log(this.container);
-	
-	if(this.container.filters)
-		this.container.filters.push( this.filter );
-	else
-		this.container.filters = [ this.filter ];
-		
-	this.filterIndex = this.container.filters.length - 1;
+      case 'blur':
+        this.filter = new PIXI.filters.BlurFilter();
+        
+        for(var c in this.config)
+          this.filter[c] = this.config[c];
+          
+        break;
+    }
+    
+    if(this.container.filters)
+      this.container.filters.push( this.filter );
+    else
+      this.container.filters = [ this.filter ];
+      
+    this.filterIndex = this.container.filters.length - 1;
   }
 
   ngOnDestroy(){
-	this.container.filters.splice( this.filterIndex, 1 );
+    this.container.filters = null;
   }
 }
