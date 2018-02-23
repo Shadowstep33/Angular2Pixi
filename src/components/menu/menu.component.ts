@@ -15,9 +15,10 @@ import { SpriteComponent } from '../sprite/sprite.component';
   template: '<span></span>'
 })
 export class MenuComponent extends SpriteComponent {
-  
   menuContainer: PIXI.Container;
   
+  @Input() itemHeight = 200;
+  @Input() itemWidth = 200;
   isGrid = false;
   isScrollable = true;
   w = window.innerWidth;
@@ -61,6 +62,10 @@ export class MenuComponent extends SpriteComponent {
 		this.container
 		.on('mousemove',this.stageMove.bind(this))
 		.on('touchmove',this.stageMove.bind(this)); 
+    
+		this.container
+		.on('click', (e) => { if(this.dragging) e.stopPropegation() })
+		.on('tap', (e) => { if(this.dragging) e.stopPropegation() }); 
   }
   
   getViewport(){
@@ -71,7 +76,7 @@ export class MenuComponent extends SpriteComponent {
   }
   
   itemInViewport(i){
-    let itemPosX = i * this.itemWidth();
+    let itemPosX = i * this.itemWidth;
     
     return ( itemPosX >= this.getViewport().min ) && ( itemPosX <= this.getViewport().max );
   }
@@ -84,24 +89,21 @@ export class MenuComponent extends SpriteComponent {
   }
   
   positionItem(i){
-    let baseH = this.h * 0.5;
+    let baseH = this.itemHeight;
+    let baseW = this.itemWidth;
     
     return {
-      x: i * this.itemWidth(),
-      y: this.isGrid ? baseH * (Math.floor(i/3) + 1) : baseH
+      x: this.isGrid ? ((i%3) * baseW) : (i * baseW),
+      y: this.isGrid ? baseH * (Math.floor(i/3)) : baseH
     }
-  }
-  
-  itemWidth(){
-    return this.w / 3;
   }
   
   stageMouseDown(event){
     this.mouseDown = true;
     if (!this.dragging) {
-        this.dragging = true;
-        this.dragPoint = event.data.getLocalPosition(this.container);
-        this.dragPoint.x -= this.menuContainer.x;
+      this.dragging = true;
+      this.dragPoint = event.data.getLocalPosition(this.container);
+      this.dragPoint.x -= this.menuContainer.x;
     }
   }
   stageMouseUp(event){
@@ -116,9 +118,10 @@ export class MenuComponent extends SpriteComponent {
       let newPosition = event.data.getLocalPosition(this.container);
       let oldPosition = this.menuContainer.position;
       
-      console.log("Move:", newPosition.x, this.dragPoint.x, newPosition.x - this.dragPoint.x);
-      
-      this.menuContainer.position.set(newPosition.x - this.dragPoint.x, oldPosition.y);
+      this.menuContainer.position.set(
+        newPosition.x - this.dragPoint.x, 
+        this.isGrid ? newPosition.y - this.dragPoint.y : oldPosition.y
+      );
     }
   }
 }
