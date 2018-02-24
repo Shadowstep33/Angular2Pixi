@@ -19,10 +19,12 @@ export class MenuComponent extends SpriteComponent {
   
   @Input() itemHeight = 200;
   @Input() itemWidth = 200;
-  isGrid = false;
-  isScrollable = true;
-  w = window.innerWidth;
-  h = window.innerHeight;
+  @Input() x = 0;
+  @Input() y = 0;
+  @Input() w = window.innerWidth;
+  @Input() h = window.innerHeight;
+  @Input() isGrid = false;
+  @Input() isScrollable = true;
   
   dragPoint = {x: 0, y: 0};
   mouseDown = false;
@@ -43,7 +45,8 @@ export class MenuComponent extends SpriteComponent {
   
   initMenuContainer(){  
     this.menuContainer = new PIXI.Container();
-    this.container.interactive = true;
+    this.menuContainer.position.x = this.x;
+    this.menuContainer.position.y = this.y;
     
     console.log("Menu Container", this.menuContainer);
     
@@ -51,21 +54,22 @@ export class MenuComponent extends SpriteComponent {
   }
   
   initInteraction(){
-		this.container
+    let self = this;
+    this.menuContainer.interactive = true;
+    
+		this.menuContainer
 		.on('mousedown',this.stageMouseDown.bind(this))
 		.on('touchstart',this.stageMouseDown.bind(this)); 
     
-		this.container
+		this.menuContainer
+		.on('mouseupoutside',this.stageMouseUp.bind(this))
 		.on('mouseup',this.stageMouseUp.bind(this))
+		.on('touchendoutside',this.stageMouseUp.bind(this))
 		.on('touchend',this.stageMouseUp.bind(this)); 
     
-		this.container
+		this.menuContainer
 		.on('mousemove',this.stageMove.bind(this))
 		.on('touchmove',this.stageMove.bind(this)); 
-    
-		this.container
-		.on('click', (e) => { if(this.dragging) e.stopPropegation() })
-		.on('tap', (e) => { if(this.dragging) e.stopPropegation() }); 
   }
   
   getViewport(){
@@ -101,20 +105,26 @@ export class MenuComponent extends SpriteComponent {
   stageMouseDown(event){
     this.mouseDown = true;
     if (!this.dragging) {
-      this.dragging = true;
       this.dragPoint = event.data.getLocalPosition(this.container);
-      this.dragPoint.x -= this.menuContainer.x;
+      
+      this.container.pivot.set(this.dragPoint.x, this.dragPoint.y)
+      this.container.position.set(event.data.global.x, event.data.global.y);
+      
+      this.dragPoint.x -= this.menuContainer.x;   
+      this.dragPoint.y -= this.menuContainer.y;   
     }
   }
   stageMouseUp(event){
     this.mouseDown = false;
     if (this.dragging) {
-        this.dragging = false;
+        this.dragging = this.menuContainer.dragging = false;
     }
   }
    
   stageMove(event){
     if(this.mouseDown){
+      this.dragging = this.menuContainer.dragging = true;
+      
       let newPosition = event.data.getLocalPosition(this.container);
       let oldPosition = this.menuContainer.position;
       
