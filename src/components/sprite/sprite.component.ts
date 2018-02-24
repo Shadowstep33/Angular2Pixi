@@ -18,6 +18,7 @@ export class SpriteComponent {
   @Input() imgUrl: string = '';
   @Input() scale: number = 1;
   @Input() font: string = "Arial";
+  @Input() strokeColor: string = "#000000";
   @Input() interactive: boolean = true;
   
 @Input() _x: number = 0;
@@ -111,7 +112,7 @@ get y(): number {
 			fontFamily: this.font, 
 			fontSize: this.fontSize, 
 			fill:"white", 
-			stroke: "#000000", 
+      stroke: this.strokeColor, 
 			strokeThickness: 4
 		});
 		

@@ -17,6 +17,7 @@ import { SpriteComponent } from '../sprite/sprite.component';
 export class TextComponent extends SpriteComponent {
 
   @Input() fontSize: string = "48px";
+  @Input() strokeColor: string = "#000000";
   @Input() anchor = { x: 0.5, y: 0.5 };
 	@Input()
 	set valueToShow(val: string) {
@@ -52,7 +53,7 @@ export class TextComponent extends SpriteComponent {
           fontFamily: this.font, 
           fontSize: this.fontSize, 
           fill:"white", 
-          stroke: "#000000", 
+          stroke: this.strokeColor, 
           strokeThickness: 4
         });
         

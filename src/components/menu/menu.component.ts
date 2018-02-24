@@ -75,30 +75,83 @@ export class MenuComponent extends SpriteComponent {
   getViewport(){
     return {
       min: this.menuContainer.position.x,
-      max: this.w
+      max: this.menuContainer.position.x + this.w
     };
   }
   
   itemInViewport(i){
-    let itemPosX = i * this.itemWidth;
+    let child = this.menuContainer.children[i];
     
-    return ( itemPosX >= this.getViewport().min ) && ( itemPosX <= this.getViewport().max );
+    if(!child) return false;
+    
+    let itemPosX = child.transform.worldTransform.tx;
+    let itemMaxX = child.transform.worldTransform.tx + child.getBounds().width;
+    
+    let vMin = this.getViewport().min;
+    let vMax = this.getViewport().max;
+    
+    return itemPosX >= vMin && itemMaxX <= vMax;
+  }
+  
+  distanceFromCenter(i){
+    let child = this.menuContainer.children[i];
+    
+    if(!child) return 0;
+    
+    let vMin = this.getViewport().min;
+    let vMax = this.getViewport().max;
+    let center = this.w / 1.4;
+    let itemX = child.transform.worldTransform.tx + (child.getBounds().width/2);
+    let distX = Math.abs( itemX - center);
+    
+    return distX;
   }
   
   sizeItem(i){
-    if( this.itemInViewport(i) )
-      return 0.35;
-    else
-      return 0.3;
+    let child = this.menuContainer.children[i];
+    if(!child) return 2;
+    
+    if(!this.dragging) return child.scale.x;
+    
+    let scaleD = this.distanceFromCenter(i) / (this.w * 0.6);
+    return 1.5 - Math.min( 1, scaleD > 0.1 ? scaleD : 0 );
   }
   
-  positionItem(i){
+  positionItems(){
+    for(var c in this.menuContainer.children){
+      let child = this.menuContainer.children[c];
+      if(!child) continue;
+      
+      if(child.children.length <= 1)  continue;
+      
+      let pos = this.calculateItemPosition(c);
+      
+      child.position.set(
+        pos.x,
+        pos.y
+      );
+      
+      child.scale.set(pos.scale);
+      
+    }
+  }
+  
+  calculateItemPosition(i){
+    let child = this.menuContainer.children[i];
+    if(!child) return {
+      x: 0,
+      y: 0,
+      scale: this.sizeItem(i)
+    };
+    
     let baseH = this.itemHeight;
     let baseW = this.itemWidth;
+    let scale = this.sizeItem(i);
     
     return {
       x: this.isGrid ? ((i%3) * baseW) : (i * baseW),
-      y: this.isGrid ? baseH * (Math.floor(i/3)) : baseH
+      y: this.isGrid ? baseH * (Math.floor(i/3)) : baseH,
+      scale: scale
     }
   }
   
@@ -128,10 +181,30 @@ export class MenuComponent extends SpriteComponent {
       let newPosition = event.data.getLocalPosition(this.container);
       let oldPosition = this.menuContainer.position;
       
+      let newX = !this.isGrid ? newPosition.x - this.dragPoint.x : oldPosition.x;
+      let newY = this.isGrid ? newPosition.y - this.dragPoint.y : oldPosition.y;
+      
+      let menuWidth = this.menuContainer.getBounds().width - (this.w * 0.6);
+      let menuHeight = this.menuContainer.getBounds().height;
+      
+      if(this.isGrid){
+        if(newY > this.y)
+          newY = oldPosition.y;
+        if(newY <= menuHeight * -1)
+          newY = oldPosition.y;
+      }else{
+        if(newX > this.x + 100)
+          newX = oldPosition.x;
+        if(newX < menuWidth * -1)
+          newX = oldPosition.x;
+      }
+        
       this.menuContainer.position.set(
-        !this.isGrid ? newPosition.x - this.dragPoint.x : oldPosition.x, 
-        this.isGrid ? newPosition.y - this.dragPoint.y : oldPosition.y
+        newX, 
+        newY
       );
+      
+      this.positionItems();
     }
   }
 }
