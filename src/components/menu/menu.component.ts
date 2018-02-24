@@ -129,7 +129,7 @@ export class MenuComponent extends SpriteComponent {
       let oldPosition = this.menuContainer.position;
       
       this.menuContainer.position.set(
-        newPosition.x - this.dragPoint.x, 
+        !this.isGrid ? newPosition.x - this.dragPoint.x : oldPosition.x, 
         this.isGrid ? newPosition.y - this.dragPoint.y : oldPosition.y
       );
     }

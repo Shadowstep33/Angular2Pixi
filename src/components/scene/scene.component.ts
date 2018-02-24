@@ -136,35 +136,4 @@ export class SceneComponent {
 	if(this.mainStage.parent)
 		this.mainStage.parent.removeChild(this.mainStage);
   }
-  
-  @HostListener('window:resize')
-  resizeStage(){
-	console.log(this);
-	let W = window.innerWidth;
-	let H = window.innerHeight;
-	
-	if(this.renderer){
-		let renderer = this.renderer.pixi.renderer;
-		let currWidth = this.mainStage.getBounds().width;
-		let currHeight = this.mainStage.getBounds().height;
-		
-		//Get current ratio of stage to renderer
-		let ratio = Math.min(W / renderer.width, H / renderer.height);
-		console.log("Ratio", ratio);
-		
-		//Resize renderer to new window
-		this.renderer.width = W;
-		this.renderer.height = H;
-		renderer.resize(W, H);
-		
-		//Move mainstage to center of screen
-		// this.mainStage.position.set(currWidth/2, currHeight/2);
-		
-		//Scale it up/down to fit the renderer and maintain ratio
-		this.mainStage.scale.set(ratio, ratio);
-
-		//Pivot so it originates from window center
-		// this.mainStage.pivot.set(W/2, H/2);
-	}
-  }
 }

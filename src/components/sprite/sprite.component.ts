@@ -119,7 +119,7 @@ get y(): number {
 		t.position.x = this._x - 30;
 		t.position.y = this._y;
 		t.anchor.x = this.tAnchor.x;
-		t.anchor.y = this.tAnchor.x;
+		t.anchor.y = this.tAnchor.y;
 		
 		this.textSpr = t;
 	}
