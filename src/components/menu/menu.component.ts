@@ -131,7 +131,8 @@ export class MenuComponent extends SpriteComponent {
         pos.y
       );
       
-      child.scale.set(pos.scale);
+      if(!this.isGrid)
+        child.scale.set(pos.scale);
       
     }
   }
@@ -151,7 +152,7 @@ export class MenuComponent extends SpriteComponent {
     return {
       x: this.isGrid ? ((i%3) * baseW) : (i * baseW),
       y: this.isGrid ? baseH * (Math.floor(i/3)) : baseH,
-      scale: scale
+      scale: this.isGrid ? 1 : scale
     }
   }
   
