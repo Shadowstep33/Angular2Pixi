@@ -114,7 +114,8 @@ export class MenuComponent extends SpriteComponent {
     if(!this.dragging) return child.scale.x;
     
     let scaleD = this.distanceFromCenter(i) / (this.w * 0.6);
-    return 1.5 - Math.min( 1, scaleD > 0.1 ? scaleD : 0 );
+    let scale = (1.5 - Math.min( 1, scaleD > 0.1 ? scaleD : 0 ) );
+    return scale.toFixed(2);
   }
   
   positionItems(){

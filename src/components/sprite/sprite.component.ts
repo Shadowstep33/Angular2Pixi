@@ -16,36 +16,36 @@ export class SpriteComponent {
 
   @Input() handleClick = null;
   @Input() imgUrl: string = '';
+  @Input() frameName: string = '';
   @Input() scale: number = 1;
   @Input() font: string = "Arial";
   @Input() strokeColor: string = "#000000";
   @Input() interactive: boolean = true;
-  
-@Input() _x: number = 0;
-@Input()
-set x(val: number) {
-	this._x = (val) || 0;
-	
-	// if(this.spriteObject)
-		// this.positionSprite();
-}
-get x(): number {
-	return this._x;
-}
+    
+  @Input() _x: number = 0;
+  @Input()
+  set x(val: number) {
+    this._x = (val) || 0;
+    
+    // if(this.spriteObject)
+      // this.positionSprite();
+  }
+  get x(): number {
+    return this._x;
+  }
 
-@Input() _y: number = 0;
-@Input()
-set y(val: number) {
-	this._y = (val) || 0;
+  @Input() _y: number = 0;
+  @Input()
+  set y(val: number) {
+    this._y = (val) || 0;
 
-	// if(this.spriteObject)
-		// this.positionSprite();
-}
-get y(): number {
-	return this._y;
-}
-	
-	
+    // if(this.spriteObject)
+      // this.positionSprite();
+  }
+  get y(): number {
+    return this._y;
+  }
+    
   @Input() fontSize: string = "48px";
   @Input() text: string = '';
   @Input() container: PIXI.Container = null;
@@ -61,41 +61,40 @@ get y(): number {
   }
 
   ngOnInit(){
-	this.init();
+    this.init();
   }
   
-  init(){
-	
-	this.spriteStage = new PIXI.Container();
-	
-	this.addSprite(this.imgUrl);
-	this.addText(this.text);
-	
-	if(this.container)
-		this.container.addChild(this.spriteStage); 
-		
-	if(this.anim == 'hover')
-		this.slowHover();
-	
-	if(this.handleClick && this.interactive)
-		this.addInteraction(this.handleClick);
+  init(){	
+    this.spriteStage = new PIXI.Container();
+    
+    this.addSprite(this.imgUrl, this.frameName);
+    this.addText(this.text);
+    
+    if(this.container)
+      this.container.addChild(this.spriteStage); 
+      
+    if(this.anim == 'hover')
+      this.slowHover();
+    
+    if(this.handleClick && this.interactive)
+      this.addInteraction(this.handleClick);
   }
 
-  addSprite(img){
-	if(img.trim() != ""){
-		let texture = PIXI.Texture.fromImage(img);
+  addSprite(img, frame){
+    if(img.trim() != "" || frame.trim() != ""){
+      let texture = img ? PIXI.Texture.fromImage(img) : PIXI.Texture.fromFrame(frame);
 
-		//create sprite
-		this.spriteObject = new PIXI.Sprite(texture);
-		this.spriteObject.anchor.x = 0.5;
-		this.spriteObject.anchor.y = 0.5;
-		
-		//positioning and sizing
-		this.positionSprite();
-		
-		//add to sprite container
-		this.spriteStage.addChild(this.spriteObject);  
-	} 
+      //create sprite
+      this.spriteObject = new PIXI.Sprite(texture);
+      this.spriteObject.anchor.x = 0.5;
+      this.spriteObject.anchor.y = 0.5;
+      
+      //positioning and sizing
+      this.positionSprite();
+      
+      //add to sprite container
+      this.spriteStage.addChild(this.spriteObject);  
+    } 
   }
   
   positionSprite(){

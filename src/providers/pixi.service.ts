@@ -39,7 +39,7 @@ export class PixiService {
   }
 
   animate(t){
-	let self = this;
+    let self = this;
     this.time = (new Date()).getTime()/1000;
 
     let deltaTime = this.time - this.last_time;
@@ -48,7 +48,7 @@ export class PixiService {
     if(this.worldStage){
 
       for(let s in this.to_render)
-        this.to_render[s].update(deltaTime / 60.0);
+        this.to_render[s].update(deltaTime);
 
       for(let c in this.anim_loop_callbacks)
         this.anim_loop_callbacks[c]();
@@ -56,10 +56,10 @@ export class PixiService {
       this.renderer.render(this.worldStage);
     }
     this.last_time = this.time;
-	
-	requestAnimationFrame( (t) => {
-		self.animate(t);
-	});
+    
+    requestAnimationFrame( (t) => {
+      self.animate(t);
+    });
   }
 
   appendRenderer(id){
