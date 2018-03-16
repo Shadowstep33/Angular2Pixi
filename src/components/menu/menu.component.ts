@@ -1,12 +1,5 @@
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import * as PIXI from 'pixi.js';
-import { 
-	TweenLite, 
-	Circ, 
-	Sine, 
-	SlowMo, 
-	Power4
-} from "gsap";
 
 import { SpriteComponent } from '../sprite/sprite.component';
 
@@ -81,21 +74,7 @@ export class MenuComponent extends SpriteComponent {
     };
   }
   
-  itemInViewport(i){
-    let child = this.menuContainer.children[i];
-    
-    if(!child) return false;
-    
-    let itemPosX = child.transform.worldTransform.tx;
-    let itemMaxX = child.transform.worldTransform.tx + child.getBounds().width;
-    
-    let vMin = this.getViewport().min;
-    let vMax = this.getViewport().max;
-    
-    return itemPosX >= vMin && itemMaxX <= vMax;
-  }
-  
-  distanceFromCenter(i){
+  distanceFromCenter(i: number){
     let child = this.menuContainer.children[i];
     
     if(!child) return 0;
@@ -109,7 +88,7 @@ export class MenuComponent extends SpriteComponent {
     return distX;
   }
   
-  sizeItem(i){
+  sizeItem(i: number){
     let child = this.menuContainer.children[i];
     if(!child) return 2;
     
@@ -117,7 +96,7 @@ export class MenuComponent extends SpriteComponent {
     
     let scaleD = this.distanceFromCenter(i) / (this.w * 0.6);
     let scale = (1.5 - Math.min( 1, scaleD > 0.1 ? scaleD : 0 ) );
-    return scale.toFixed(2);
+    return scale;
   }
   
   positionItems(){
@@ -125,9 +104,13 @@ export class MenuComponent extends SpriteComponent {
       let child = this.menuContainer.children[c];
       if(!child) continue;
       
+      if( !(child instanceof PIXI.Sprite)&& 
+      !(child instanceof PIXI.Container) && 
+      !(child instanceof PIXI.Text ) ) return;
+      
       if(child.children.length <= 1)  continue;
       
-      let pos = this.calculateItemPosition(c);
+      let pos = this.calculateItemPosition( parseInt(c) );
       
       child.position.set(
         pos.x,
@@ -135,12 +118,12 @@ export class MenuComponent extends SpriteComponent {
       );
       
       if(!this.isGrid)
-        child.scale.set(pos.scale);
+        child.scale.set( pos.scale );
       
     }
   }
   
-  calculateItemPosition(i){
+  calculateItemPosition(i: number){
     let child = this.menuContainer.children[i];
     if(!child) return {
       x: 0,
@@ -159,7 +142,7 @@ export class MenuComponent extends SpriteComponent {
     }
   }
   
-  stageMouseDown(event){
+  stageMouseDown(event: any){
     this.mouseDown = true;
     if (!this.dragging) {
       this.dragPoint = event.data.getLocalPosition(this.container);
@@ -171,16 +154,16 @@ export class MenuComponent extends SpriteComponent {
       this.dragPoint.y -= this.menuContainer.y;   
     }
   }
-  stageMouseUp(event){
+  stageMouseUp(event: any){
     this.mouseDown = false;
     if (this.dragging) {
-        this.dragging = this.menuContainer.dragging = false;
+        this.dragging = false;
     }
   }
    
-  stageMove(event){
+  stageMove(event: any){
     if(this.mouseDown){
-      this.dragging = this.menuContainer.dragging = true;
+      this.dragging = true;
       
       let newPosition = event.data.getLocalPosition(this.container);
       let oldPosition = this.menuContainer.position;
@@ -196,7 +179,7 @@ export class MenuComponent extends SpriteComponent {
     }
   }
   
-  calcPosition( oldP, newP ){
+  calcPosition( oldP: any, newP: any ){
     let newX = !this.isGrid ? newP.x - this.dragPoint.x : oldP.x;
     let newY = this.isGrid ? newP.y - this.dragPoint.y : oldP.y;
     

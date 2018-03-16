@@ -3,7 +3,7 @@
   "version": "0.3.6",
   "description": "Markup framework for creating PIXI scenes in Angular 2",
   "main": "./dist/es/index.js",
-  "types": "./dist/types/index.d.ts",
+  "typings": "./dist/types/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",

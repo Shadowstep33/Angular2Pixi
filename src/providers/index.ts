@@ -1,7 +1,2 @@
-import { AssetService } from './asset.service';
-import { PixiService } from './pixi.service';
-
-export {
-	AssetService,
-	PixiService
-};
+export * from './asset.service';
+export * from './pixi.service';
