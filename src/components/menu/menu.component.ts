@@ -41,6 +41,8 @@ export class MenuComponent extends SpriteComponent {
     
     if(this.isScrollable)
       this.initInteraction();
+      
+    this.positionItems();
   }
   
   initMenuContainer(){  
@@ -182,25 +184,9 @@ export class MenuComponent extends SpriteComponent {
       
       let newPosition = event.data.getLocalPosition(this.container);
       let oldPosition = this.menuContainer.position;
+       
+      let { newX, newY } = this.calcPosition( oldPosition, newPosition );
       
-      let newX = !this.isGrid ? newPosition.x - this.dragPoint.x : oldPosition.x;
-      let newY = this.isGrid ? newPosition.y - this.dragPoint.y : oldPosition.y;
-      
-      let menuWidth = this.menuContainer.getBounds().width - (this.w * 0.6);
-      let menuHeight = this.menuContainer.getBounds().height;
-      
-      if(this.isGrid){
-        if(newY > this.y)
-          newY = oldPosition.y;
-        if(newY <= menuHeight * -1)
-          newY = oldPosition.y;
-      }else{
-        if(newX > this.x + 100)
-          newX = oldPosition.x;
-        if(newX < menuWidth * -1)
-          newX = oldPosition.x;
-      }
-        
       this.menuContainer.position.set(
         newX, 
         newY
@@ -208,5 +194,27 @@ export class MenuComponent extends SpriteComponent {
       
       this.positionItems();
     }
+  }
+  
+  calcPosition( oldP, newP ){
+    let newX = !this.isGrid ? newP.x - this.dragPoint.x : oldP.x;
+    let newY = this.isGrid ? newP.y - this.dragPoint.y : oldP.y;
+    
+    let menuWidth = this.menuContainer.getBounds().width - (this.w * 0.6);
+    let menuHeight = this.menuContainer.getBounds().height;
+    
+    if(this.isGrid){
+      if(newY > this.y)
+        newY = oldP.y;
+      if(newY <= menuHeight * -1)
+        newY = oldP.y;
+    }else{
+      if(newX > this.x + 100)
+        newX = oldP.x;
+      if(newX < menuWidth * -1)
+        newX = oldP.x;
+    }  
+    
+    return { newX, newY };
   }
 }
