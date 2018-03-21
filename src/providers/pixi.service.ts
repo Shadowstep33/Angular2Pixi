@@ -12,12 +12,7 @@ import * as PIXI from 'pixi.js';
 export class PixiService {
 
   loader = new PIXI.loaders.Loader();
-  app = new PIXI.Application({
-  	width: window.innerWidth,
-  	height: window.innerHeight,
-  	transparent: true,
-  	antialias: true
-  });
+  app: PIXI.Application;
   
 	ratio = 0;
 	starting_width = 0;
@@ -103,14 +98,21 @@ export class PixiService {
       height = window.innerHeight;
 
     //Initialize game container
-    this.renderer = PIXI.autoDetectRenderer({
-      width: width,
-      height: height,
-      transparent: true, 
-      autoResize: false, 
-      resolution: 1, 
-      view: el 
+    // this.renderer = PIXI.autoDetectRenderer({
+      // width: width,
+      // height: height,
+      // transparent: true, 
+      // autoResize: false, 
+      // resolution: 1, 
+      // view: el 
+    // });
+    this.app = new PIXI.Application({
+      width: window.innerWidth,
+      height: window.innerHeight,
+      transparent: true,
+      antialias: true
     });
+    this.renderer = this.app.renderer;
     this.worldStage = new PIXI.Container();
 
     //Initialize game camera
@@ -123,7 +125,7 @@ export class PixiService {
     this.starting_height = h;
     this.starting_height_of_window = h/window.innerHeight;
 
-    this.animate(0);
+    // this.animate(0);
   }
 
 }
