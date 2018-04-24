@@ -2,6 +2,9 @@
 
 Create PIXI scenes in Angular 2 with markup!
 
+
+**Important! +v0.3.x comes with breaking changes including the removal of SceneComponent and RendererComponent to simplify the process. The docs will be updated accordingly**
+
 # Install
 
 ```npm install angular2pixi```
