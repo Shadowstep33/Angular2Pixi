@@ -90,27 +90,13 @@ export class PixiService {
   }
 
   init(width, height, el){
-    //Initialize game renderer
-    if(typeof width == "undefined" || width == 0)
-      width = window.innerWidth;
-
-    if(typeof height == "undefined" || height == 0)
-      height = window.innerHeight;
-
     //Initialize game container
-    // this.renderer = PIXI.autoDetectRenderer({
-      // width: width,
-      // height: height,
-      // transparent: true, 
-      // autoResize: false, 
-      // resolution: 1, 
-      // view: el 
-    // });
     this.app = new PIXI.Application({
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: width,
+      height: height,
       transparent: true,
-      antialias: true
+      antialias: true,
+      view: el
     });
     this.renderer = this.app.renderer;
     this.worldStage = new PIXI.Container();
@@ -125,7 +111,7 @@ export class PixiService {
     this.starting_height = h;
     this.starting_height_of_window = h/window.innerHeight;
 
-    // this.animate(0);
+    this.animate(0);
   }
 
 }
