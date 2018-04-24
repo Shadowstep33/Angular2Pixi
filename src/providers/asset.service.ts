@@ -17,7 +17,6 @@ export class AssetService {
   callbacks = {};
 
   constructor() {
-    console.log('Hello Asset Provider');
   }
 
   init(){
@@ -52,8 +51,7 @@ export class AssetService {
     self.loader.once("complete",function(res){
       self.assets_loaded = true;
       self.loading = false;
-      console.log("Assets Loaded");
-
+      
       //Run callbacks
       self.runCallbacks();
 

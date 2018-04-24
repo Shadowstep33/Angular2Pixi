@@ -43,8 +43,6 @@ export class MenuComponent extends SpriteComponent {
     this.menuContainer.position.x = this.x;
     this.menuContainer.position.y = this.y;
     
-    console.log("Menu Container", this.menuContainer);
-    
     this.container.addChild(this.menuContainer);  
   }
   

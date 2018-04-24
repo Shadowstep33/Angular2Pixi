@@ -36,7 +36,6 @@ export class TextComponent extends SpriteComponent {
     
     this.addText(this.text);
     
-    console.log("Anim ",this.anim)
     if(this.anim == 'hover')
       this.slowHover();
     
@@ -65,7 +64,6 @@ export class TextComponent extends SpriteComponent {
         t.anchor.y = this.anchor.y;
         
         this.textSpr = t;
-        console.log(t);
       }
     }
   }
