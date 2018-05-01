@@ -18,6 +18,7 @@ npm-debug.log*
 .versions/
 coverage/
 dist/
+out-tsc/
 !node_modules/DayJob/
 !node_modules/DayJob/*
 tmp/
