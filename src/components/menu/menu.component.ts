@@ -131,7 +131,9 @@ export class MenuComponent {
     let scale = this.sizeItem(i);
     
     return {
-      x: ( this.isGrid ? ((i%3) * baseW) : (i * baseW) ) + ((this.itemWidth*0.5) * (3 - this.menuContainer.children[i].length) ),
+      x: ( this.isGrid ? 
+        ((i%3) * baseW) 
+        : (i * baseW) ) + Math.max(0, (this.itemWidth*0.5) * (3 - this.menuContainer.children.length) ),
       y: this.isGrid ? baseH * (Math.floor(i/3)) : baseH,
       scale: this.isGrid ? 1 : scale
     }
