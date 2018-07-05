@@ -8,11 +8,14 @@ import { TextComponent } from './components/text/text.component';
 import { FilterComponent } from './components/filters/filters.component';
 import { MenuComponent } from './components/menu/menu.component';
 
+import { FilterDirective } from './components/filters/filters.directive';
+
 @NgModule({
   declarations: [
     SpriteComponent,
     TextComponent,
     FilterComponent,
+    FilterDirective,
     MenuComponent,
   ],
   imports: [
@@ -21,6 +24,7 @@ import { MenuComponent } from './components/menu/menu.component';
     SpriteComponent,
     TextComponent,
     FilterComponent,
+    FilterDirective,
     MenuComponent,
   ],
   providers: [
