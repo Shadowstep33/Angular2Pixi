@@ -19,6 +19,7 @@ export class SpriteComponent {
   @Input() frameName: string = '';
   @Input() scale: number = 1;
   @Input() font: string = "Arial";
+  @Input() fontSize: string = "48px";
   @Input() strokeColor: string = "#000000";
   @Input() interactive: boolean = true;
     
@@ -46,10 +47,18 @@ export class SpriteComponent {
     return this._y;
   }
     
-  @Input() fontSize: string = "48px";
   @Input() text: string = '';
+	@Input()
+	set valueToShow(val: string) {
+		this.text = (val) || '';	
+		
+		if(this.textSpr)
+			this.textSpr.text = this.text;
+	}
+  
   @Input() container: PIXI.Container = null;
   @Input() anim: string = '';
+  @Input() anchor = { x: 0.5, y: 0.5 };
   @Input() tAnchor = { x: 0.5, y: 0.5 };
   
   spriteStage: PIXI.Container;
@@ -86,8 +95,8 @@ export class SpriteComponent {
 
       //create sprite
       this.spriteObject = new PIXI.Sprite(texture);
-      this.spriteObject.anchor.x = 0.5;
-      this.spriteObject.anchor.y = 0.5;
+      this.spriteObject.anchor.x = this.anchor.x;
+      this.spriteObject.anchor.y = this.anchor.x;
       
       //positioning and sizing
       this.positionSprite();
@@ -106,59 +115,64 @@ export class SpriteComponent {
   }
   
   addText(text){
-	if(text.trim() != ""){
-		let t = new PIXI.Text(text,{
-			fontFamily: this.font, 
-			fontSize: this.fontSize, 
-			fill:"white", 
-      stroke: this.strokeColor, 
-			strokeThickness: 4
-		});
-		
-		this.spriteStage.addChild(t);
-		t.position.x = this._x - 30;
-		t.position.y = this._y;
-		t.anchor.x = this.tAnchor.x;
-		t.anchor.y = this.tAnchor.y;
-		
-		this.textSpr = t;
-	}
+    if(this.textSpr){
+      this.textSpr.text = text;
+    }else{
+      if(text.toString().trim() != ""){
+        let t = new PIXI.Text(text,{
+          fontFamily: this.font, 
+          fontSize: this.fontSize, 
+          fill:"white", 
+          stroke: this.strokeColor, 
+          strokeThickness: 4
+        });
+        
+        this.spriteStage.addChild(t);
+        t.position.x = this._x - 30;
+        t.position.y = this._y;
+        t.anchor.x = this.tAnchor.x;
+        t.anchor.y = this.tAnchor.y;
+        
+        this.textSpr = t;
+      }
+    }
   }
   
   addInteraction(cb){
-	if(!this.spriteObject) return;
-  
-	this.spriteObject.interactive = true;
-	
-	if(this.anim == 'explode'){
-		this.spriteObject
-		.on('tap', () => { this.explodeOut().then(cb); })
-		.on('click', () => { this.explodeOut().then(cb); });
-	}else{
-		
-		this.spriteObject
-		.on('tap', cb)
-		.on('click', cb);
-	}
+    if(!this.spriteObject) return;
+    
+    this.spriteObject.interactive = true;
+    
+    if(this.anim == 'explode'){
+      this.spriteObject
+      .on('tap', () => { this.explodeOut().then(cb); })
+      .on('click', () => { this.explodeOut().then(cb); });
+    }else{
+      
+      this.spriteObject
+      .on('tap', cb)
+      .on('click', cb);
+    }
   }
   
   slowHover(){
-	this.hoverUp();
+    this.hoverUp();
   }
   
   hoverUp(){
-	TweenLite.to(this.spriteObject.position, 3, { 
-		y: "-=30", 
-		ease: Sine.easeInOut,
-		onComplete: this.hoverDown.bind(this)
-	});
+    TweenLite.to(this.spriteObject.position, 3, { 
+      y: "-=30", 
+      ease: Sine.easeInOut,
+      onComplete: this.hoverDown.bind(this)
+    });
   }
+  
   hoverDown(){
-	TweenLite.to(this.spriteObject.position, 4, { 
-		y: "+=30", 
-		ease: Sine.easeInOut,
-		onComplete: this.hoverUp.bind(this)
-	});
+    TweenLite.to(this.spriteObject.position, 4, { 
+      y: "+=30", 
+      ease: Sine.easeInOut,
+      onComplete: this.hoverUp.bind(this)
+    });
   }
   
   explodeOut(){

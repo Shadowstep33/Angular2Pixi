@@ -1,13 +1,12 @@
 import { Component, Input } from '@angular/core';
 import * as PIXI from 'pixi.js';
 
-import { SpriteComponent } from '../sprite/sprite.component';
-
 @Component({
   selector: 'menu',
   template: '<span></span>'
 })
-export class MenuComponent extends SpriteComponent {
+export class MenuComponent {
+  @Input() container: PIXI.Container = null;
   menuContainer: PIXI.Container;
   
   @Input() itemHeight = 200;
@@ -24,12 +23,9 @@ export class MenuComponent extends SpriteComponent {
   dragging = false;
   
   constructor() {
-    super();
   }
 
   ngOnInit(){
-    super.ngOnInit.bind(this)();
-    
     this.initMenuContainer();
     
     if(this.isScrollable)
@@ -40,10 +36,9 @@ export class MenuComponent extends SpriteComponent {
   
   initMenuContainer(){  
     this.menuContainer = new PIXI.Container();
+    this.menuContainer.interactive = true;
     this.menuContainer.position.x = this.x;
     this.menuContainer.position.y = this.y;
-    
-    console.log("Menu Container", this.menuContainer);
     
     this.container.addChild(this.menuContainer);  
   }
@@ -136,7 +131,9 @@ export class MenuComponent extends SpriteComponent {
     let scale = this.sizeItem(i);
     
     return {
-      x: this.isGrid ? ((i%3) * baseW) : (i * baseW),
+      x: ( this.isGrid ? 
+        ((i%3) * baseW) 
+        : (i * baseW) ) + Math.max(0, (this.itemWidth*0.5) * (3 - this.menuContainer.children.length) ),
       y: this.isGrid ? baseH * (Math.floor(i/3)) : baseH,
       scale: this.isGrid ? 1 : scale
     }

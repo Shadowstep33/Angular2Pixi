@@ -30,7 +30,6 @@ export class PixiService {
 
 
   constructor() {
-    console.log('Hello Pixi Provider');
   }
 
   animate(t){
