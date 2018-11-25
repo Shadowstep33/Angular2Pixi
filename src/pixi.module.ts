@@ -7,10 +7,13 @@ import { SpriteComponent } from './components/sprite/sprite.component';
 import { FilterComponent } from './components/filters/filters.component';
 import { MenuComponent } from './components/menu/menu.component';
 
+import { FilterDirective } from './components/filters/filters.directive';
+
 @NgModule({
   declarations: [
     SpriteComponent,
     FilterComponent,
+    FilterDirective,
     MenuComponent,
   ],
   imports: [
@@ -18,6 +21,7 @@ import { MenuComponent } from './components/menu/menu.component';
   exports: [
     SpriteComponent,
     FilterComponent,
+    FilterDirective,
     MenuComponent,
   ],
   providers: [

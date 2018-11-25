@@ -1,6 +1,6 @@
 {
   "name": "angular2pixi",
-  "version": "0.5.1",
+  "version": "0.5.4",
   "description": "Markup framework for creating PIXI scenes in Angular 2",
   "main": "./dist/es/index.js",
   "typings": "./dist/types/index.d.ts",
@@ -19,18 +19,17 @@
     "url": "https://github.com/Shadowstep33/Angular2Pixi/issues"
   },
   "homepage": "https://github.com/Shadowstep33/Angular2Pixi#readme",
-  "peerDependencies": {
-    "@types/gsap": "^1.19.1",
-    "@types/pixi.js": "^4.5.2",
+  "dependencies": {
     "@angular/common": "^5.2.3",
     "@angular/compiler": "^5.2.3",
     "@angular/compiler-cli": "^5.2.3",
-    "@angular/core": "^5.2.3"
-  },
-  "dependencies": {
+    "@angular/core": "^5.2.3",
     "gsap": "^1.20.2",
-    "pixi-filters": "^2.0.0",
+    "@types/gsap": "^1.19.2",
+    "@types/pixi.js": "^4.7.2",
     "pixi.js": "^4.5.4",
+    "pixi-display": "^1.1.1",
+    "pixi-filters": "^2.6.1",
     "rxjs": "^5.5.6"
   },
   "devDependencies": {
