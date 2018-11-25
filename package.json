@@ -1,6 +1,6 @@
 {
   "name": "angular2pixi",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Markup framework for creating PIXI scenes in Angular 2",
   "main": "./dist/es/index.js",
   "typings": "./dist/types/index.d.ts",
