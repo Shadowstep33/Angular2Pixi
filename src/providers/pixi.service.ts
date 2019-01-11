@@ -28,7 +28,7 @@ export class PixiService {
   anim_loop_callbacks = [];
   to_render = [];
 
-  constructor() {}
+  constructor() { }
 
   animate(t) {
     let self = this;
@@ -94,8 +94,8 @@ export class PixiService {
     this.renderer.rootRenderTarget.resolution = window.devicePixelRatio;
     this.renderer.resize(width - 1, height);
     this.renderer.resize(
-      width / window.devicePixelRatio,
-      height / window.devicePixelRatio
+      width,
+      height
     );
     this.renderer.plugins.interaction.resolution = window.devicePixelRatio;
 

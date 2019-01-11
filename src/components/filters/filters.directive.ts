@@ -6,7 +6,7 @@ import * as filters from "pixi-filters";
   selector: "[a2pfilter]"
 })
 export class FilterDirective {
-  @Input("container")
+  @Input("filterStage")
   container;
   @Input("a2pfilter")
   set filterConfig(value) {

@@ -23,14 +23,27 @@ export class MenuComponent {
   mouseDown = false;
   dragging = false;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     this.initMenuContainer();
 
     if (this.isScrollable) this.initInteraction();
 
+    this.positionContainer();
     this.positionItems();
+  }
+
+  positionContainer(event?: any) {
+    this.container.pivot.set(this.dragPoint.x, this.dragPoint.y);
+
+    if (event)
+      this.container.position.set(event.data.global.x, event.data.global.y);
+    else
+      this.container.position.set(0, 0);
+
+    this.dragPoint.x = this.menuContainer.x;
+    this.dragPoint.y = this.menuContainer.y;
   }
 
   initMenuContainer() {
@@ -75,22 +88,11 @@ export class MenuComponent {
 
     let vMin = this.getViewport().min;
     let vMax = this.getViewport().max;
-    let center = this.w / 1.4;
+    let center = this.w / 2;
     let itemX = child.transform.worldTransform.tx + child.getBounds().width / 2;
     let distX = Math.abs(itemX - center);
 
     return distX;
-  }
-
-  sizeItem(i: number) {
-    let child = this.menuContainer.children[i];
-    if (!child) return 2;
-
-    if (!this.dragging) return child.scale.x;
-
-    let scaleD = this.distanceFromCenter(i) / (this.w * 0.6);
-    let scale = 1.5 - Math.min(1, scaleD > 0.1 ? scaleD : 0);
-    return scale;
   }
 
   positionItems() {
@@ -115,6 +117,16 @@ export class MenuComponent {
     }
   }
 
+  sizeItem(i) {
+    let child = this.menuContainer.children[i];
+    if (!child)
+      return 2;
+
+    let scaleD = this.distanceFromCenter(i) / (this.w * 0.5);
+    let scale = 1.5 - Math.min(1, scaleD > 0.1 ? scaleD : 0);
+    return scale;
+  }
+
   calculateItemPosition(i: number) {
     let child = this.menuContainer.children[i];
     if (!child)
@@ -128,32 +140,35 @@ export class MenuComponent {
     let baseW = this.itemWidth;
     let scale = this.sizeItem(i);
 
-    return {
-      x:
-        (this.isGrid ? (i % this.rowLength) * baseW : i * baseW) +
-        Math.max(
-          0,
-          this.itemWidth *
-            0.5 *
-            (this.rowLength - this.menuContainer.children.length)
-        ),
-      y: this.isGrid ? baseH * Math.floor(i / this.rowLength) : baseH,
-      scale: this.isGrid ? 1 : scale
-    };
+    if (this.isGrid) {
+      return {
+        x:
+          ((i % this.rowLength) * baseW) +
+          Math.max(
+            0,
+            this.itemWidth * (this.rowLength - this.menuContainer.children.length)
+          ),
+        y: baseH * Math.floor(i / this.rowLength),
+        scale: 1
+      };
+    } else {
+      return {
+        x:
+          (i * baseW) +
+          this.itemWidth * i,
+        y: baseH,
+        scale: scale
+      };
+    }
   }
 
   stageMouseDown(event: any) {
     this.mouseDown = true;
     if (!this.dragging) {
-      this.dragPoint = event.data.getLocalPosition(this.container);
-
-      this.container.pivot.set(this.dragPoint.x, this.dragPoint.y);
-      this.container.position.set(event.data.global.x, event.data.global.y);
-
-      this.dragPoint.x -= this.menuContainer.x;
-      this.dragPoint.y -= this.menuContainer.y;
+      this.positionContainer(event);
     }
   }
+
   stageMouseUp(event: any) {
     this.mouseDown = false;
     if (this.dragging) {
@@ -180,8 +195,10 @@ export class MenuComponent {
     let newX = !this.isGrid ? newP.x - this.dragPoint.x : oldP.x;
     let newY = this.isGrid ? newP.y - this.dragPoint.y : oldP.y;
 
-    let menuWidth = this.menuContainer.getBounds().width - this.w * 0.6;
-    let menuHeight = this.menuContainer.getBounds().height;
+    // let menuWidth = this.menuContainer.getBounds().width;
+    // let menuHeight = this.menuContainer.getBounds().height;
+    let menuWidth = this.w;
+    let menuHeight = this.h;
 
     if (this.isGrid) {
       if (newY > this.y) newY = oldP.y;
