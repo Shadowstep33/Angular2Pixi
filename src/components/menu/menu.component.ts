@@ -35,15 +35,7 @@ export class MenuComponent {
   }
 
   positionContainer(event?: any) {
-    this.container.pivot.set(this.dragPoint.x, this.dragPoint.y);
-
-    if (event)
-      this.container.position.set(event.data.global.x, event.data.global.y);
-    else
-      this.container.position.set(0, 0);
-
-    this.dragPoint.x = this.menuContainer.x;
-    this.dragPoint.y = this.menuContainer.y;
+    this.menuContainer.position.set(this.x, this.y);
   }
 
   initMenuContainer() {
@@ -165,7 +157,10 @@ export class MenuComponent {
   stageMouseDown(event: any) {
     this.mouseDown = true;
     if (!this.dragging) {
-      this.positionContainer(event);
+      let newPosition = event.data.getLocalPosition(this.container);
+      this.dragPoint.x = newPosition.x;
+      this.dragPoint.y = newPosition.y;
+      // this.menuContainer.pivot.set(this.dragPoint.x, this.isGrid ? this.dragPoint.y : 0);
     }
   }
 
@@ -181,33 +176,29 @@ export class MenuComponent {
       this.dragging = true;
 
       let newPosition = event.data.getLocalPosition(this.container);
-      let oldPosition = this.menuContainer.position;
 
-      let { newX, newY } = this.calcPosition(oldPosition, newPosition);
-
-      this.menuContainer.position.set(newX, newY);
-
-      this.positionItems();
+      this.calcPosition(newPosition)
+      this.dragPoint.x = newPosition.x;
+      this.dragPoint.y = newPosition.y;
     }
   }
 
-  calcPosition(oldP: any, newP: any) {
-    let newX = !this.isGrid ? newP.x - this.dragPoint.x : oldP.x;
-    let newY = this.isGrid ? newP.y - this.dragPoint.y : oldP.y;
 
-    // let menuWidth = this.menuContainer.getBounds().width;
-    // let menuHeight = this.menuContainer.getBounds().height;
-    let menuWidth = this.w;
+  calcPosition(newP: any) {
+    let oldP = Object.assign({}, this.menuContainer.position)
+    let menuWidth = this.menuContainer.children.length * this.itemWidth;
     let menuHeight = this.h;
 
     if (this.isGrid) {
-      if (newY > this.y) newY = oldP.y;
-      if (newY <= menuHeight * -1) newY = oldP.y;
-    } else {
-      if (newX > this.x + 100) newX = oldP.x;
-      if (newX < menuWidth * -1) newX = oldP.x;
-    }
+      this.menuContainer.position.y -= this.dragPoint.y - newP.y;
 
-    return { newX, newY };
+      if (this.menuContainer.position.y > this.y + menuHeight) this.menuContainer.position.y = this.y + menuHeight;
+      if (this.menuContainer.position.y < menuHeight * -1) this.menuContainer.position.y = menuHeight * -1;
+    } else {
+      this.menuContainer.position.x -= this.dragPoint.x - newP.x;
+
+      if (this.menuContainer.position.x > this.x + menuWidth) this.menuContainer.position.x = this.x + menuWidth;
+      if (this.menuContainer.position.x < menuWidth * -1) this.menuContainer.position.x = menuWidth * -1;
+    }
   }
 }
