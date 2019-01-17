@@ -1,15 +1,10 @@
 # Angular2Pixi
 
-Create PIXI scenes in Angular 2 with markup!
-
-
-**Important! +v0.5.x comes with breaking changes including the consolidation of TextComponent into SpriteComponent and the removal of SpriteComponent inheritance from MenuComponent. The docs will be updated accordingly**
-
-**~Important! +v0.4.x comes with breaking changes including the removal of SceneComponent and RendererComponent to simplify the process. The docs will be updated accordingly~**
+Create PIXI scenes in Angular 2 with markup! Make sure to check out the [wiki](https://github.com/Shadowstep33/Angular2Pixi/wiki) for more information on usage. There is also a repo with working demos found at: https://github.com/Shadowstep33/a2p-demos
 
 # Install
 
-```npm install angular2pixi```
+```npm install --save angular2pixi```
 
 # Dependencies
 
