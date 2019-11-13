@@ -59,3 +59,78 @@ and a few services
 ```
 
 Please refer to the wiki for more details.
+
+# Advanced configuration
+
+## Use `pixi.js-legacy` instead of `pixi.js`
+
+If you want your app to be widely supported (eg. browsers not supporting WebGL), you'll need the legacy build of pixi.js, which can be found in another package.
+
+First, install [pixi.js-legacy](https://www.npmjs.com/package/pixi.js-legacy).
+
+```sh
+npm install --save pixi.js-legacy
+```
+
+Then, we need to customize our angular *webpack* config using [@angular-builders/custom-webpack](https://www.npmjs.com/package/@angular-builders/custom-webpack) to replace imports of `pixi.js` with imports of `pixi.js-legacy`.
+
+```sh
+npm install -save-dev @angular-builders/custom-webpack
+```
+
+Edit your `angular.json` to use a custom webpack config:
+
+```json
+{
+  "projects": {
+    "{{example-app}}": {
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./webpack.config.js"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "browserTarget": "{{example-app}}:build"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Finally, create a file `webpack.config.js` with this content:
+
+```js
+const webpack = require('webpack');
+const {resolve} = require('path');
+
+module.exports = {
+	plugins: [
+		new webpack.NormalModuleReplacementPlugin(
+            // For every import of `pixi.js`
+			/pixi\.js/,
+			resource => {
+                if(
+                    // If the import is not from a node-module (so, from our app code)
+                    !resource.context.startsWith(resolve(__dirname, 'node_modules')) ||
+                    // Or if the import is from Angular2Pixi
+                    resource.context.startsWith(resolve(__dirname, 'node_modules/angular2pixi'))
+                ){
+                    // Replace the import with the `legacy` build of pixi.
+					resource.request = require.resolve('pixi.js-legacy');
+				}
+				return resource
+			}
+		),
+	]
+};
+```
+
+You're all set !

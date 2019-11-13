@@ -1,7 +1,5 @@
 import { Injectable } from "@angular/core";
-import "rxjs/add/operator/map";
 import * as PIXI from "pixi.js";
-import "pixi-display";
 
 /*
   Generated class for the Pixi provider.
@@ -11,7 +9,7 @@ import "pixi-display";
 */
 @Injectable()
 export class PixiService {
-  loader = new PIXI.loaders.Loader();
+  loader = new PIXI.Loader();
   app: PIXI.Application;
 
   ratio = 0;
@@ -91,7 +89,10 @@ export class PixiService {
 
     this.renderer = this.app.renderer;
     this.renderer.resolution = window.devicePixelRatio;
-    this.renderer.rootRenderTarget.resolution = window.devicePixelRatio;
+    // Removed `pixi-display`, so this prop do not exist anymore
+    if(this.renderer.rootRenderTarget){
+      this.renderer.rootRenderTarget.resolution = window.devicePixelRatio;
+    }
     this.renderer.resize(width - 1, height);
     this.renderer.resize(
       width,

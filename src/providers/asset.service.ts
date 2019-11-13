@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
 import * as PIXI from 'pixi.js';
 
 /*
@@ -11,7 +10,7 @@ import * as PIXI from 'pixi.js';
 @Injectable()
 export class AssetService {
 
-  loader = new PIXI.loaders.Loader();
+  loader = new PIXI.Loader();
   loading = false;
   assets_loaded = false;
   callbacks = {};
