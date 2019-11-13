@@ -1,12 +1,5 @@
 import { Component, ElementRef, Input } from '@angular/core';
 import * as PIXI from 'pixi.js';
-import { 
-	TweenLite, 
-	Circ, 
-	Sine, 
-	SlowMo, 
-	Power4
-} from "gsap";
 
 @Component({
   selector: 'filter-effect',

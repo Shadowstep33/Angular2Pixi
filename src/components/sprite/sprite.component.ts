@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input } from "@angular/core";
 import * as PIXI from "pixi.js";
-import { TweenLite, Circ, Sine, SlowMo, Power4 } from "gsap";
+import { TweenLite, Sine } from 'gsap/all';
 
 @Component({
   selector: "sprite",
@@ -94,8 +94,8 @@ export class SpriteComponent {
   addSprite(img, frame) {
     if (img.trim() != "" || frame.trim() != "") {
       let texture = img
-        ? PIXI.Texture.fromImage(img)
-        : PIXI.Texture.fromFrame(frame);
+        ? PIXI.Texture.from(img)
+        : PIXI.Texture.from(frame);
 
       //create sprite
       this.spriteObject = new PIXI.Sprite(texture);
