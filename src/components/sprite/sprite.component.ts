@@ -4,7 +4,7 @@ import { TweenLite, Circ, Sine, SlowMo, Power4 } from "gsap";
 
 @Component({
   selector: "sprite",
-  template: "<span></span>"
+  template: "<span></span>",
 })
 export class SpriteComponent {
   @Input()
@@ -21,6 +21,8 @@ export class SpriteComponent {
   fontSize: string = "48px";
   @Input()
   strokeColor: string = "#000000";
+  @Input()
+  fontColor: string = "white";
   @Input()
   interactive: boolean = true;
 
@@ -126,9 +128,9 @@ export class SpriteComponent {
         let t = new PIXI.Text(text, {
           fontFamily: this.font,
           fontSize: this.fontSize,
-          fill: "white",
+          fill: this.fontColor,
           stroke: this.strokeColor,
-          strokeThickness: 4
+          strokeThickness: 4,
         });
 
         t.resolution = window.devicePixelRatio;
@@ -166,30 +168,30 @@ export class SpriteComponent {
   }
 
   hoverUp() {
-    TweenLite.to(this.spriteObject.position, 3, {
+    TweenLite.to(this.spriteStage.position, 3, {
       y: "-=30",
       ease: Sine.easeInOut,
-      onComplete: this.hoverDown.bind(this)
+      onComplete: this.hoverDown.bind(this),
     });
   }
 
   hoverDown() {
-    TweenLite.to(this.spriteObject.position, 4, {
+    TweenLite.to(this.spriteStage.position, 4, {
       y: "+=30",
       ease: Sine.easeInOut,
-      onComplete: this.hoverUp.bind(this)
+      onComplete: this.hoverUp.bind(this),
     });
   }
 
   explodeOut() {
     return new Promise((resolve, reject) => {
       TweenLite.to(this.spriteObject, 0.8, {
-        alpha: 0
+        alpha: 0,
       });
       TweenLite.to(this.spriteObject.scale, 0.8, {
         x: 2,
         y: 2,
-        onComplete: resolve.bind(this)
+        onComplete: resolve.bind(this),
       });
     });
   }
