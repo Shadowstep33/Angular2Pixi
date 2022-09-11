@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
 import * as PIXI from 'pixi.js';
 
 /*
@@ -11,7 +10,7 @@ import * as PIXI from 'pixi.js';
 @Injectable()
 export class AssetService {
 
-  loader = new PIXI.loaders.Loader();
+  loader = new PIXI.Loader();
   loading = false;
   assets_loaded = false;
   callbacks = {};
@@ -46,9 +45,10 @@ export class AssetService {
   loadAssets(){
 	let self = this;
 	
+    self.loading = true;
     self.loader.load();
 
-    self.loader.once("complete",function(res){
+    self.loader.load(function(loader, res){
       self.assets_loaded = true;
       self.loading = false;
       
@@ -56,10 +56,6 @@ export class AssetService {
       self.runCallbacks();
 
     })
-
-    self.loader.on("progress", function(){
-      self.loading = true;
-    });
   }
 
   //only works for horizontal spritesheets

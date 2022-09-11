@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input } from "@angular/core";
 import * as PIXI from "pixi.js";
-import { TweenLite, Circ, Sine, SlowMo, Power4 } from "gsap";
+import { TweenLite, Sine } from "gsap";
 
 @Component({
   selector: "sprite",
@@ -93,14 +93,19 @@ export class SpriteComponent {
       this.addInteraction(this.handleClick);
   }
 
-  addSprite(img, frame) {
+  addSprite(img, frame, animation = null, sheet: PIXI.Texture[] = null) {
     if (img.trim() != "" || frame.trim() != "") {
-      let texture = img
-        ? PIXI.Texture.fromImage(img)
-        : PIXI.Texture.fromFrame(frame);
-
-      //create sprite
-      this.spriteObject = new PIXI.Sprite(texture);
+      if(animation == "spritesheet"){
+        this.spriteObject = new PIXI.AnimatedSprite(sheet);
+      }else{
+        let texture = img
+          ? PIXI.Texture.from(img)
+          : PIXI.Texture.from(frame);
+  
+        //create sprite
+        this.spriteObject = new PIXI.Sprite(texture);
+      }
+      
       this.spriteObject.anchor.x = this.anchor.x;
       this.spriteObject.anchor.y = this.anchor.x;
 
